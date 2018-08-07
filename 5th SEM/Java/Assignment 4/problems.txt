@@ -1,0 +1,16 @@
+A])	There are 3 classes: box, box weight, box shipment
+1. the member variable of box class are height, width, depth and there is a method volume which will cal the volume of the box.
+2. the box weight class also contains the above variables height, width, depth[apply inheretence] also contains an extra  variable that is weight which denotes weight of the box
+3. the box shipment class contains the above variable height, width, depth, weight,[apply inheritence] also contains the variable cost which denotes the cost for shipment
+write a program in java that will calculate the volume of the box nd print the value of the weight and cost of that box using the concept of multi-level inheritance.
+
+
+
+
+B])	Assume that a bank maintains 2 kinds of accounts for customers one called as savings other as current. the saving account provide interest and withdrawal facility  but no cheque book facility. current has cheque but no interest. current maintain min balance. if the balance falls below the level a sevice charge is imposed. create a java class account that stores customer name, acc no and type of acc. from this derive the classes curr_acct and sav_acct, to make them more specific to their requirement. Include necessary member function in order to achieve the folllowing task.
+1. accept deposit from customer and update the balance.
+2. display the balance
+3. compute and deposit interest
+4. permit withdrawal and update value.
+5. check for min balance, impose penalty if required and update the balance
+write a a java prog to implement this using the concept of hierarchical inheritance.

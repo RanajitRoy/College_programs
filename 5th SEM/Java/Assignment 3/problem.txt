@@ -1,0 +1,5 @@
+Create a class called boardparam that contans 2 instance variables length and width of the integer type and a void method for calculating surface area of the board, using parameterised method to create the object.
+
+Create a class named shape. make circle, triangle, and rectangle as object of the shape class and calculate their area by concept of method overloading.
+
+Write a java program to calculate the addition of two matrix class contains an integer 2D array with dimension n x m.
