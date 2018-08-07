@@ -1,0 +1,11 @@
+Private Sub Option1_Click()
+If Option1.Value = True Then
+Text1.FontBold = False
+End If
+End Sub
+
+Private Sub Option2_Click()
+If Option2.Value = True Then
+Text1.FontBold = True
+End If
+End Sub

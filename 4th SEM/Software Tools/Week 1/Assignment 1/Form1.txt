@@ -1,0 +1,12 @@
+Private Sub Command1_Click()
+Form2.Label12.Caption = Text1.Text
+Form2.Label13.Caption = Text2.Text
+Form2.Show
+End Sub
+
+Private Sub Text2_Change()
+Form2.Label8.Caption = 0.4 * Val(Text2.Text)
+Form2.Label9.Caption = 0.2 * Val(Text2.Text)
+Form2.Label10.Caption = 0.1 * Val(Text2.Text)
+Form2.Label11.Caption = Val(Form2.Label8.Caption) + Val(Form2.Label9.Caption) + Val(Form2.Label10.Caption)
+End Sub

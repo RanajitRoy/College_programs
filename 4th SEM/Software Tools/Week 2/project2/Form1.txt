@@ -1,0 +1,23 @@
+Private Sub Command1_Click()
+x = InputBox("Enter a character", "Character input")
+If Len(x) > 1 Or x = "" Then
+Label1.Caption = "Enter one character"
+Else
+v = Asc(x)
+If v >= 65 And v <= 90 Then
+If v = 65 Or v = 69 Or v = 73 Or v = 79 Or v = 85 Then
+Label1.Caption = "Vowel!"
+Else
+Label1.Caption = "Consonant!"
+End If
+ElseIf v >= 97 And v <= 122 Then
+If v = 97 Or v = 101 Or v = 105 Or v = 111 Or v = 117 Then
+Label1.Caption = "Vowel!"
+Else
+Label1.Caption = "Consonant!"
+End If
+Else
+Label1.Caption = "Special character!"
+End If
+End If
+End Sub

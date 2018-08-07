@@ -1,0 +1,17 @@
+Private Sub Command1_Click()
+If Hard.Text = "" Or Carbon.Text = "" Or Tens.Text = "" Then
+MsgBox ("Invalid Input")
+ElseIf Val(Hard.Text) > 50 And Val(Carbon.Text) < 0.7 And Val(Tens.Text) > 5600 Then
+MsgBox ("Steel Grade is 10")
+ElseIf Val(Hard.Text) > 50 And Val(Carbon.Text) < 0.7 Then
+MsgBox ("Steel Grade is 9")
+ElseIf Val(Carbon.Text) < 0.7 And Val(Tens.Text) > 5600 Then
+MsgBox ("Steel Grade is 8")
+ElseIf Val(Hard.Text) > 50 And Val(Tens.Text) > 5600 Then
+MsgBox ("Steel Grade is 7")
+ElseIf Val(Hard.Text) > 50 Or Val(Carbon.Text) < 0.7 Or Val(Tens.Text) > 5600 Then
+MsgBox ("Steel Grade is 6")
+Else
+MsgBox ("Steel Grade is 5")
+End If
+End Sub

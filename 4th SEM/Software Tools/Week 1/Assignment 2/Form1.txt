@@ -1,0 +1,34 @@
+Private Sub Command1_Click()
+Form2.Label2.Caption = Text1.Text
+Form2.Label5.Caption = "You are promoted"
+Dim flag As Integer
+flag = 0
+If Val(Text2.Text) < 40 Then
+flag = flag + 1
+End If
+If Val(Text3.Text) < 40 Then
+flag = flag + 1
+End If
+If Val(Text4.Text) < 40 Then
+flag = flag + 1
+End If
+If Val(Text5.Text) < 40 Then
+flag = flag + 1
+End If
+
+Dim total As Integer
+total = Val(Text2.Text) + Val(Text3.Text) + Val(Text4.Text) + Val(Text5.Text) + Val(Text6.Text)
+If total >= 300 Then
+Form2.Label4.Caption = "1st"
+ElseIf total >= 250 Then Form2.Label4.Caption = "2nd"
+ElseIf total >= 200 Then Form2.Label4.Caption = "3rd"
+Else: Form2.Label4.Caption = "FAIL"
+Form2.Label5.Caption = "You are not promoted"
+End If
+
+If flag > 2 Then
+Form2.Label4.Caption = "FAIL"
+Form2.Label5.Caption = "You are not promoted"
+End If
+Form2.Show
+End Sub
