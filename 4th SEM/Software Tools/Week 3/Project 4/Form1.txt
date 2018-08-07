@@ -1,0 +1,72 @@
+Private Sub Option1_Click()
+Shape1.Shape = 0
+End Sub
+
+Private Sub Option2_Click()
+Shape1.Shape = 1
+End Sub
+
+Private Sub Option3_Click()
+Shape1.Shape = 2
+End Sub
+
+Private Sub Option4_Click()
+Shape1.Shape = 3
+End Sub
+
+Private Sub Option5_Click()
+Shape1.Shape = 5
+End Sub
+
+Private Sub Option6_Click()
+Shape1.Shape = 4
+End Sub
+
+Private Sub Option7_Click()
+Shape1.FillColor = &HFF&
+End Sub
+
+Private Sub Option8_Click()
+Shape1.FillColor = &HC000&
+End Sub
+
+Private Sub Option9_Click()
+Shape1.FillColor = &HFF0000
+End Sub
+
+Private Sub Option10_Click()
+Shape1.BorderColor = &HFF&
+End Sub
+
+Private Sub Option11_Click()
+Shape1.BorderColor = &HC000&
+End Sub
+
+Private Sub Option12_Click()
+Shape1.BorderColor = &HFF0000
+End Sub
+
+Private Sub Option13_Click()
+Shape1.FillStyle = 0
+End Sub
+
+Private Sub Option14_Click()
+Shape1.FillStyle = 1
+End Sub
+
+Private Sub Option15_Click()
+Shape1.FillStyle = 2
+End Sub
+
+Private Sub Option16_Click()
+Shape1.FillStyle = 3
+End Sub
+
+Private Sub Option17_Click()
+Shape1.FillStyle = 5
+End Sub
+
+Private Sub Option18_Click()
+Shape1.FillStyle = 7
+End Sub
+

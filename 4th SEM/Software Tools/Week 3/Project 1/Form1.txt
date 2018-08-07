@@ -1,0 +1,4 @@
+Private Sub Command1_Click()
+Image1.Picture = LoadPicture("C:\Users\Ranajit\Pictures\barca.jpg")
+Picture1.Picture = LoadPicture("C:\Users\Ranajit\Pictures\barca.jpg")
+End Sub

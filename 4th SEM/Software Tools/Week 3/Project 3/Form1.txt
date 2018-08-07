@@ -1,0 +1,4 @@
+Private Sub Command1_Click()
+adr = "C:\Users\Ranajit\Pictures\"
+Image1.Picture = LoadPicture(adr + Text1.Text)
+End Sub

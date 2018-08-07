@@ -1,0 +1,12 @@
+Private Sub Option1_Click()
+Image1.Picture = LoadPicture("C:\Users\Ranajit\Pictures\india.jpg")
+End Sub
+
+Private Sub Option2_Click()
+Image1.Picture = LoadPicture("C:\Users\Ranajit\Pictures\australia.jpg")
+End Sub
+
+Private Sub Option3_Click()
+Image1.Picture = LoadPicture("C:\Users\Ranajit\Pictures\england.jpg")
+End Sub
+
