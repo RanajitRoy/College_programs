@@ -24,7 +24,7 @@ struct Matrix
 			std::cout<<std::endl;
 		}
 	}
-	Matrix<T> operator+(Matrix<T> &a)
+	Matrix<T> operator+(Matrix<T> a)
 	{
 		Matrix<T> res(mat.size(), mat[0].size());
 		
@@ -33,7 +33,7 @@ struct Matrix
 				res.mat[i][j]=mat[i][j]+a.mat[i][j];
 		return res;
 	}
-	Matrix<T> operator-(Matrix<T> &a)
+	Matrix<T> operator-(Matrix<T> a)
 	{
 		Matrix<T> res(mat.size(), mat[0].size());
 		
@@ -42,7 +42,7 @@ struct Matrix
 				res.mat[i][j]=mat[i][j]-a.mat[i][j];
 		return res;
 	}
-	Matrix<T> operator*(Matrix<T> &a)
+	Matrix<T> operator*(Matrix<T> a)
 	{
 		Matrix<T> res(mat.size(), a.mat[0].size());
 		
@@ -59,28 +59,16 @@ int main()
 	std::cout<<"Enter the size of the matrices: ";
 	int n,m;
 	std::cin>>n>>m;
-	Matrix<int> A(n, m), B(n, m);
-	Matrix<double> C(n, m), D(n, m);
+	Matrix<int> A(n, m), B(n, m), C(n, m), D(n, m);
 	std::cout<<"Enter the matrix A: \n";
 	A.initialize();
 	std::cout<<"Enter the matrix B: \n";
 	B.initialize();
 	std::cout<<"Enter the matrix C: \n";
 	C.initialize();
-	std::cout<<"Enter the matrix D: \n";
-	D.initialize();
-	std::cout<<"\nThe matrix A+B:\n";
-	(A+B).display();
-	std::cout<<"The matrix A-B:\n";
-	(A-B).display();
-	std::cout<<"The matrix A*B:\n";
-	(A*B).display();
-	std::cout<<"The matrix C+D:\n";
-	(C+D).display();
-	std::cout<<"The matrix C-D:\n";
-	(C-D).display();
-	std::cout<<"The matrix C*D:\n";
-	(D*C).display();
+	D = A+B*C;
+	std::cout<<"D=A+B*C then D:\n";
+	D.display();
 	std::cout<<std::endl;
 	return 0;
 }

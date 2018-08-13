@@ -23,7 +23,7 @@ bool search(std::vector<T>& vect, T& elm)
 int main()
 {
 	int n, in;
-	std::cout<<"enter the size of both vector\n";
+	std::cout<<"Enter the size of both vector\n";
 	std::cin>> n;
 	std::vector<int> vect1(n);
 	std::vector<std::string> vect2(n);
