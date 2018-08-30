@@ -1,0 +1,6 @@
+Q1: Create an abstract class Shape with 2 abstract methods: area(), disp(). Now design 3 concrete classes Rectangle, Circle, Triangle and compute area and display it separately
+
+
+Q2: Create 2 interfaces each with 1 abstract method, inherit a new interface from the two, adding a new method. Create a class by implementing a new interface also inheriting from a concrete class. Now write 3 methods, each of which takes 1 of the 3 interfaces as an argument. In main() create an object of your class and pass it to each of the methods.
+
+Q3: Write a JAVA code to create a package named TestPackage, create a class named Add. Under this package which contains a method named display. Import this package in another JAVA program.
