@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 interface Vehicle{
-	double speed;
-	int gear;
 	void speedUp(double in);
 	void changeGear(int gear);
 	void speedDown(int dec);
 }
 
 class Car implements Vehicle{
+	double speed;
+	int gear;
 	Car()
 	{
 		speed = 0;
@@ -23,17 +23,19 @@ class Car implements Vehicle{
 	{
 		speed += in;
 	}
-	public void changeGear(double gear)
+	public void changeGear(int gear)
 	{
 		this.gear = gear;
 	}
-	public void speedDown(double in)
+	public void speedDown(int dec)
 	{
 		speed -= dec;
 	}
 }
 
 class Bike implements Vehicle{
+	double speed;
+	int gear;
 	Bike()
 	{
 		speed = 0;
@@ -48,17 +50,19 @@ class Bike implements Vehicle{
 	{
 		speed += in;
 	}
-	public void changeGear(double gear)
+	public void changeGear(int gear)
 	{
 		this.gear = gear;
 	}
-	public void speedDown(double in)
+	public void speedDown(int dec)
 	{
 		speed -= dec;
 	}
 }
 
 class Bicycle implements Vehicle{
+	double speed;
+	int gear;
 	Bicycle()
 	{
 		speed = 0;
@@ -73,11 +77,11 @@ class Bicycle implements Vehicle{
 	{
 		speed += in;
 	}
-	public void changeGear(double gear)
+	public void changeGear(int gear)
 	{
 		this.gear = gear;
 	}
-	public void speedDown(double in)
+	public void speedDown(int dec)
 	{
 		speed -= dec;
 	}
@@ -95,6 +99,8 @@ class Main
 		Bike bk = new Bike(s,g);
 		Bicycle bc = new Bicycle(s,g);
 		cr.speedUp(5); bk.speedUp(3); bc.speedUp(1);
+		cr.speedDown(2); bk.speedDown(4); bc.speedDown(2);
+		cr.changeGear(4); bk.changeGear(2);
 		System.out.println("The value of speed & gear of\n Car: "+cr.speed+" "+cr.gear);
 		System.out.println(" Bike: "+bk.speed+" "+bk.gear);
 		System.out.println(" Bicycle: "+bc.speed+" "+bc.gear);
