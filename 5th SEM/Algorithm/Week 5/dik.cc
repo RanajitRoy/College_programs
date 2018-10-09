@@ -4,6 +4,7 @@
 #include <list>
 #include <utility>
 #include <algorithm>
+
 struct compare
 {
 	bool operator()(const std::pair<int, int> x, const std::pair<int, int> y)
@@ -11,11 +12,14 @@ struct compare
 		return x.second >= y.second;
 	}
 };
+
 int main()
 {
+	std::cout<<"Enter the no. of vertices & edges: ";
 	int e, v; std::cin>>v>>e;
 	std::vector<std::list<std::pair<int, int>>> adjList(v);
 	int inf = 1;
+	std::cout<<"Enter the edges with adjacent vertices and their weights:\n";
 	for(int i = 0; i < e; i++)
 	{
 		int x, y, z; std::cin>>x>>y>>z;
@@ -24,7 +28,7 @@ int main()
 	}
 	std::vector<int> distance(v, inf);
 	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, compare> pq;
-	std::cout<<"Enter the source and destination\n";
+	std::cout<<"Enter the source: ";
 	int src; std::cin>>src;
 	distance[src] = 0;
 	pq.push(std::make_pair(src, 0));

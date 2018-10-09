@@ -7,9 +7,11 @@
 
 int main()
 {
+	std::cout<<"Enter the no. of vertices & edges: ";
 	int e, v; std::cin>>v>>e;
 	std::vector<std::list<std::pair<int, int>>> adjList(v);
 	int inf = 1;
+	std::cout<<"Enter the edges with adjacent vertices and their weights:\n";
 	for(int i = 0; i < e; i++)
 	{
 		int x, y, z; std::cin>>x>>y>>z;
@@ -17,6 +19,7 @@ int main()
 		inf += z;
 	}
 	std::vector<int> distance(v, inf);
+	std::cout<<"Enter the source: ";
 	int src; std::cin>>src;
 	distance[src] = 0;
 	for(int i = 0;i < v-1; i++)

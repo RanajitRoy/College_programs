@@ -5,8 +5,10 @@
 
 int main()
 {
+	std::cout<<"Enter the no. of vertices & edges: ";
     int v, e; std::cin>>v>>e;
     std::vector<std::list<int>> adjList(v);
+	std::cout<<"Enter the edges with adjacent vertices:\n";
 	for(int i = 0; i < e; i++)
 	{
 		int x, y; std::cin>>x>>y;
@@ -14,6 +16,7 @@ int main()
 	}
     std::vector<bool> visited(v,false);
     std::vector<int> depth(v,0);
+	std::cout<<"Enter the source: ";
     int start; std::cin>>start;
     std::queue<int> q;
     q.push(start);
