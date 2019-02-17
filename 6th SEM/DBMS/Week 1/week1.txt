@@ -1,0 +1,428 @@
+
+SQL> create table student_ranajit
+  2  ( id number, name varchar2(40), branch varchar2(20));
+
+Table created.
+
+SQL> insert into student_ranajit
+  2  values
+  3  ( 1, 'ranajit', 'cse'),
+  4  ;\
+  5  ;
+( 1, 'ranajit', 'cse'),
+                      *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select * from student_ranajit
+  2  ;
+
+no rows selected
+
+SQL> insert into student_ranajit values
+  2  ( 1, 'Ranajit', 'CSE'),
+  3  ( 2, 'Ankur', 'CSE'),
+  4  ( 3, 'Arnab', 'CSE'),
+  5  ( 4, 'Biswadeep', 'IT');
+( 1, 'Ranajit', 'CSE'),
+                      *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended
+
+
+SQL> insert into student_ranajit values
+  2  ( 1, 'Ranajit', 'CSE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 2, 'Ankur', 'CSE'),
+  3  ;\
+  4  ;
+( 2, 'Ankur', 'CSE'),
+                    *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended
+
+
+SQL> insert into student_ranajit values
+  2  ( 2, 'Ankur', 'CSE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 3, 'Arnab', 'CSE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 4, 'Biswadeep', 'IT');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 5, 'Nilabjo', 'IT');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  (6, 'Biswanath', 'IT');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 7, 'Soumya', 'ECE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  ( 8, 'Aditya', 'ECE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  (9, 'Rohan', 'CSE');
+
+1 row created.
+
+SQL> insert into student_ranajit values
+  2  (10, 'Souvik', 'IT');
+
+1 row created.
+
+SQL> select * from student_ranajit
+  2  ;
+
+        ID NAME                                     BRANCH
+---------- ---------------------------------------- --------------------
+         1 Ranajit                                  CSE
+         2 Ankur                                    CSE
+         3 Arnab                                    CSE
+         4 Biswadeep                                IT
+         5 Nilabjo                                  IT
+         6 Biswanath                                IT
+         7 Soumya                                   ECE
+         8 Aditya                                   ECE
+         9 Rohan                                    CSE
+        10 Souvik                                   IT
+
+10 rows selected.
+
+SQL> alter table student_ranajit rename column id to roll;
+
+Table altered.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME                                     BRANCH
+---------- ---------------------------------------- --------------------
+         1 Ranajit                                  CSE
+         2 Ankur                                    CSE
+         3 Arnab                                    CSE
+         4 Biswadeep                                IT
+         5 Nilabjo                                  IT
+         6 Biswanath                                IT
+         7 Soumya                                   ECE
+         8 Aditya                                   ECE
+         9 Rohan                                    CSE
+        10 Souvik                                   IT
+
+10 rows selected.
+
+SQL> select * from student_ranajit;
+
+
+SQL> alter table student_ranajit add age number;
+
+Table altered.
+
+SQL> alter table student_ranajit add address varchar2(10) default 'Kolkata';
+
+Table altered.
+
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE ADDRESS
+---------- ------------- ------ ---------- ----------
+         1 Ranajit       CSE              Kolkata
+         2 Ankur         CSE              Kolkata
+         3 Arnab         CSE              Kolkata
+         4 Biswadeep     IT               Kolkata
+         5 Nilabjo       IT               Kolkata
+         6 Biswanath     IT               Kolkata
+         7 Soumya        ECE              Kolkata
+         8 Aditya        ECE              Kolkata
+         9 Rohan         CSE              Kolkata
+        10 Souvik        IT               Kolkata
+
+10 rows selected.
+
+
+SQL> update student_ranajit set age=20 where roll=1;
+
+1 row updated.
+
+SQL> update student_ranajit set age=20 where roll=2;
+
+1 row updated.
+
+SQL> update student_ranajit set age=21 where roll=3;
+
+1 row updated.
+
+SQL> update student_ranajit set age=21 where roll=4;
+
+1 row updated.
+
+SQL> update student_ranajit set age=20 where roll=5;
+
+1 row updated.
+
+SQL> update student_ranajit set age=21 where roll=6;
+
+1 row updated.
+
+SQL> update student_ranajit set age=20 where roll=7;
+
+1 row updated.
+
+SQL> update student_ranajit set age=20 where roll=8;
+
+1 row updated.
+
+SQL> update student_ranajit set age=20 where roll=9;
+
+1 row updated.
+
+SQL> update student_ranajit set age=23 where roll=10;
+
+1 row updated.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE ADDRESS
+---------- ------------- ------ ---------- ----------
+         1 Ranajit       CSE           20 Kolkata
+         2 Ankur         CSE           20 Kolkata
+         3 Arnab         CSE           21 Kolkata
+         4 Biswadeep     IT            21 Kolkata
+         5 Nilabjo       IT            20 Kolkata
+         6 Biswanath     IT            21 Kolkata
+         7 Soumya        ECE           20 Kolkata
+         8 Aditya        ECE           20 Kolkata
+         9 Rohan         CSE           20 Kolkata
+        10 Souvik        IT            23 Kolkata
+
+10 rows selected.
+
+SQL> alter table student_ranajit modify roll primary key;
+
+Table altered.
+
+SQL> alter table student_ranajit modify name not null;
+
+Table altered.
+
+
+SQL> alter table student_ranajit add marks integer default 75;
+
+Table altered.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE ADDRESS         MARKS
+---------- ------------- ------ ---------- ---------- ----------
+         1 Ranajit       CSE            20 Kolkata            75
+         2 Ankur         CSE            20 Kolkata            75
+         3 Arnab         CSE            21 Kolkata            75
+         4 Biswadeep     IT             21 Kolkata            75
+         5 Nilabjo       IT             20 Kolkata            75
+         6 Biswanath     IT             21 Kolkata            75
+         7 Soumya        ECE            20 Kolkata            75
+         8 Aditya        ECE            20 Kolkata            75
+         9 Rohan         CSE            20 Kolkata            75
+        10 Souvik        IT             23 Kolkata            75
+
+10 rows selected.
+
+SQL> update student_ranajit set marks=95 where roll=1;
+
+1 row updated.
+
+SQL> update student_ranajit set marks=90 where roll=4;
+
+1 row updated.
+
+SQL> update student_ranajit set marks=97 where roll=7;
+
+1 row updated.
+
+SQL> update student_ranajit set marks=40 where roll=10;
+
+1 row updated.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE ADDRESS         MARKS
+---------- ------------- ------ ---------- ---------- ----------
+         1 Ranajit       CSE            20 Kolkata            95
+         2 Ankur         CSE            20 Kolkata            75
+         3 Arnab         CSE            21 Kolkata            75
+         4 Biswadeep     IT             21 Kolkata            90
+         5 Nilabjo       IT             20 Kolkata            75
+         6 Biswanath     IT             21 Kolkata            75
+         7 Soumya        ECE            20 Kolkata            97
+         8 Aditya        ECE            20 Kolkata            75
+         9 Rohan         CSE            20 Kolkata            75
+        10 Souvik        IT             23 Kolkata            40
+
+10 rows selected.
+
+SQL> select name from student_ranajit where marks>=50;
+
+NAME
+-------------
+Ranajit
+Ankur
+Arnab
+Biswadeep
+Nilabjo
+Biswanath
+Soumya
+Aditya
+Rohan
+
+9 rows selected.
+
+SQL> delete from student_ranajit where marks<50;
+
+1 row deleted.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE ADDRESS         MARKS
+---------- ------------- ------ ---------- ---------- ----------
+         1 Ranajit       CSE            20 Kolkata            95
+         2 Ankur         CSE            20 Kolkata            75
+         3 Arnab         CSE            21 Kolkata            75
+         4 Biswadeep     IT             21 Kolkata            90
+         5 Nilabjo       IT             20 Kolkata            75
+         6 Biswanath     IT             21 Kolkata            75
+         7 Soumya        ECE            20 Kolkata            97
+         8 Aditya        ECE            20 Kolkata            75
+         9 Rohan         CSE            20 Kolkata            75
+
+9 rows selected.
+
+SQL> alter table student_ranajit drop column address;
+
+Table altered.
+
+SQL> select * from student_ranajit;
+
+      ROLL NAME          BRANCH        AGE      MARKS
+---------- ------------- ------ ---------- ----------
+         1 Ranajit       CSE            20         95
+         2 Ankur         CSE            20         75
+         3 Arnab         CSE            21         75
+         4 Biswadeep     IT             21         90
+         5 Nilabjo       IT             20         75
+         6 Biswanath     IT             21         75
+         7 Soumya        ECE            20         97
+         8 Aditya        ECE            20         75
+         9 Rohan         CSE            20         75
+
+9 rows selected.
+
+SQL> create table new_rana as select * from emp;
+
+Table created.
+
+SQL> select * from new_rana;
+
+     EMPNO ENAME      JOB       HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK     17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN  20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN  22-FEB-81       1250        500         30
+      7566 JONES      MANAGER   02-APR-81       2975                    20
+      7654 MARTIN     SALESMAN  28-SEP-81       1250       1400         30
+      7698 BLAKE      MANAGER   01-MAY-81       2850                    30
+      7782 CLARK      MANAGER   09-JUN-81       2450                    10
+      7788 SCOTT      ANALYST   19-APR-87       3000                    20
+      7839 KING       PRESIDENT 17-NOV-81       5000                    10
+      7844 TURNER     SALESMAN  08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK     23-MAY-87       1100                    20
+      7900 JAMES      CLERK     03-DEC-81        950                    30
+      7902 FORD       ANALYST   03-DEC-81       3000                    20
+      7934 MILLER     CLERK     23-JAN-82       1300                    10
+
+14 rows selected.
+
+SQL> select ename, sal from new_rana where sal>1000;
+
+ENAME             SAL
+---------- ----------
+ALLEN            1600
+WARD             1250
+JONES            2975
+MARTIN           1250
+BLAKE            2850
+CLARK            2450
+SCOTT            3000
+KING             5000
+TURNER           1500
+ADAMS            1100
+FORD             3000
+MILLER           1300
+
+12 rows selected.
+
+SQL> select count(ename) from new_rana where sal between 1000 and 3000;
+
+COUNT(ENAME)
+------------
+          11
+
+SQL> select sal, sal+100 from new_rana where sal=1250 or sal=950;
+
+       SAL    SAL+100
+---------- ----------
+      1250       1350
+      1250       1350
+       950       1050
+
+SQL> select sal, sal+100 hike from new_rana where sal=1250 or sal=950;
+
+       SAL       HIKE
+---------- ----------
+      1250       1350
+      1250       1350
+       950       1050
+
+SQL> select count(distinct job) from new_rana;
+
+COUNT(DISTINCTJOB)
+------------------
+                 5
+
+SQL> select sal, (sal+sal*.15) from new_rana where hiredate<'31-DEC-1981';
+
+       SAL (SAL+SAL*.15)
+---------- -------------
+       800           920
+      1600          1840
+      1250        1437.5
+      2975       3421.25
+      1250        1437.5
+      2850        3277.5
+      2450        2817.5
+      5000          5750
+      1500          1725
+       950        1092.5
+      3000          3450
+
+11 rows selected.
+
