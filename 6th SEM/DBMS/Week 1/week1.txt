@@ -4,47 +4,10 @@ SQL> create table student_ranajit
 
 Table created.
 
-SQL> insert into student_ranajit
-  2  values
-  3  ( 1, 'ranajit', 'cse'),
-  4  ;\
-  5  ;
-( 1, 'ranajit', 'cse'),
-                      *
-ERROR at line 3:
-ORA-00933: SQL command not properly ended
-
-
-SQL> select * from student_ranajit
-  2  ;
-
-no rows selected
-
-SQL> insert into student_ranajit values
-  2  ( 1, 'Ranajit', 'CSE'),
-  3  ( 2, 'Ankur', 'CSE'),
-  4  ( 3, 'Arnab', 'CSE'),
-  5  ( 4, 'Biswadeep', 'IT');
-( 1, 'Ranajit', 'CSE'),
-                      *
-ERROR at line 2:
-ORA-00933: SQL command not properly ended
-
-
 SQL> insert into student_ranajit values
   2  ( 1, 'Ranajit', 'CSE');
 
 1 row created.
-
-SQL> insert into student_ranajit values
-  2  ( 2, 'Ankur', 'CSE'),
-  3  ;\
-  4  ;
-( 2, 'Ankur', 'CSE'),
-                    *
-ERROR at line 2:
-ORA-00933: SQL command not properly ended
-
 
 SQL> insert into student_ranajit values
   2  ( 2, 'Ankur', 'CSE');
