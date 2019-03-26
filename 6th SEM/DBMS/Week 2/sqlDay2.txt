@@ -1,0 +1,653 @@
+
+Oracle Lab Day2 
+
+SQL> create table ndr as select empno,ename,job,hiredate,sal,deptno from emp;
+
+Table created.
+
+SQL> select * from ndr;
+
+     EMPNO ENAME      JOB       HIREDATE         SAL     DEPTNO
+---------- ---------- --------- --------- ---------- ----------
+      7369 SMITH      CLERK     17-DEC-80        800         20
+      7499 ALLEN      SALESMAN  20-FEB-81       1600         30
+      7521 WARD       SALESMAN  22-FEB-81       1250         30
+      7566 JONES      MANAGER   02-APR-81       2975         20
+      7654 MARTIN     SALESMAN  28-SEP-81       1250         30
+      7698 BLAKE      MANAGER   01-MAY-81       2850         30
+      7782 CLARK      MANAGER   09-JUN-81       2450         10
+      7788 SCOTT      ANALYST   19-APR-87       3000         20
+      7839 KING       PRESIDENT 17-NOV-81       5000         10
+      7844 TURNER     SALESMAN  08-SEP-81       1500         30
+      7876 ADAMS      CLERK     23-MAY-87       1100         20
+
+     EMPNO ENAME      JOB       HIREDATE         SAL     DEPTNO
+---------- ---------- --------- --------- ---------- ----------
+      7900 JAMES      CLERK     03-DEC-81        950         30
+      7902 FORD       ANALYST   03-DEC-81       3000         20
+      7934 MILLER     CLERK     23-JAN-82       1300         10
+
+14 rows selected.
+
+CONCATENATION OPERATOR(||) 
+
+SQL> select ename||'is working as'||job||'in the'||deptno|| 'department' from ndr;
+
+ENAME||'IS WORKING AS'||JOB||'IN THE'||DEPTNO||'DEPARTMENT'
+--------------------------------------------------------------------------------
+SMITHis working asCLERKin the20department
+ALLENis working asSALESMANin the30department
+WARDis working asSALESMANin the30department
+JONESis working asMANAGERin the20department
+MARTINis working asSALESMANin the30department
+BLAKEis working asMANAGERin the30department
+CLARKis working asMANAGERin the10department
+SCOTTis working asANALYSTin the20department
+KINGis working asPRESIDENTin the10department
+TURNERis working asSALESMANin the30department
+ADAMSis working asCLERKin the20department
+
+ENAME||'ISWORKINGAS'||JOB||'INTHE'||DEPTNO||'DEPARTMENT'
+--------------------------------------------------------------------------------
+JAMESis working asCLERKin the30department
+FORDis working asANALYSTin the20department
+MILLERis working asCLERKin the10department
+
+14 rows selected.
+
+SQL> select ename||' '||'is working as'||' ' ||job||' ' ||'in'||' ' ||deptno||' ' ||'department' from ndr;
+
+ENAME||''||'ISWORKINGAS'||''||JOB||''||'IN'||''||DEPTNO||''||'DEPARTMENT'
+--------------------------------------------------------------------------------
+SMITH is working as CLERK in 20 department
+ALLEN is working as SALESMAN in 30 department
+WARD is working as SALESMAN in 30 department
+JONES is working as MANAGER in 20 department
+MARTIN is working as SALESMAN in 30 department
+BLAKE is working as MANAGER in 30 department
+CLARK is working as MANAGER in 10 department
+SCOTT is working as ANALYST in 20 department
+KING is working as PRESIDENT in 10 department
+TURNER is working as SALESMAN in 30 department
+ADAMS is working as CLERK in 20 department
+
+ENAME||''||'ISWORKINGAS'||''||JOB||''||'IN'||''||DEPTNO||''||'DEPARTMENT'
+--------------------------------------------------------------------------------
+JAMES is working as CLERK in 30 department
+FORD is working as ANALYST in 20 department
+MILLER is working as CLERK in 10 department
+
+14 rows selected.
+
+LIKE OPERATOR
+
+SQL> select ename,job,sal from ndr where ename like 'M%';
+
+ENAME      JOB              SAL
+---------- --------- ----------
+MARTIN     SALESMAN        1250
+MILLER     CLERK           1300
+
+SQL> select ename,job,sal from ndr where ename like '%M';
+
+no rows selected
+
+SQL> select ename,job,sal from ndr where ename like '%M%';
+
+ENAME      JOB              SAL
+---------- --------- ----------
+SMITH      CLERK            800
+MARTIN     SALESMAN        1250
+ADAMS      CLERK           1100
+JAMES      CLERK            950
+MILLER     CLERK           1300
+
+SQL> select ename,job,sal from ndr where ename like '_M%';
+
+ENAME      JOB              SAL
+---------- --------- ----------
+SMITH      CLERK            800
+
+SQL> select ename,job,sal from ndr where ename like '__M%';
+
+ENAME      JOB              SAL
+---------- --------- ----------
+JAMES      CLERK            950
+
+IS NULL or NOT NULL:
+
+SQL> select ename from ndr where sal is null;
+
+no rows selected
+
+LOGICAL OPERATOR(AND, OR, NOT)
+
+SQL> select empno,ename, sal from ndr where sal>=1000 AND ENAME LIKE 'A%' ;
+
+     EMPNO ENAME             SAL
+---------- ---------- ----------
+      7499 ALLEN            1600
+      7876 ADAMS            1100
+
+SQL> select empno,ename, sal from ndr where sal>=1000 and job ='CLERK' ;
+
+     EMPNO ENAME             SAL
+---------- ---------- ----------
+      7876 ADAMS            1100
+      7934 MILLER           1300
+
+SQL> select ename, sal from ndr where ename like'A%' or sal<=1000;
+
+ENAME             SAL
+---------- ----------
+SMITH             800
+ALLEN            1600
+ADAMS            1100
+JAMES             950
+
+
+SQL> select ename from ndr where sal is not null;
+
+ENAME
+----------
+SMITH
+ALLEN
+WARD
+JONES
+MARTIN
+BLAKE
+CLARK
+SCOTT
+KING
+TURNER
+ADAMS
+
+ENAME
+----------
+JAMES
+FORD
+MILLER
+
+14 rows selected.
+
+SQL FUNCTIONS
+
+
+1. STRING FUNCTIONS: 
+
+SQL> select lower('KOLKATA') from dual;
+
+LOWER('
+-------
+kolkata
+
+SQL> select upper('kolkata') from dual;
+
+UPPER('
+-------
+KOLKATA
+
+SQL> select initcap('institute of engineering and management') from dual;
+
+INITCAP('INSTITUTEOFENGINEERINGANDMANAG
+---------------------------------------
+Institute Of Engineering And Management
+SQL> select concat('Database  ','Management') from dual;
+
+CONCAT('DATABASE','M
+--------------------
+Database  Management
+
+SQL> select substr('Database',5,4) from dual;
+
+SUBS
+----
+base
+
+SQL> select length('Database') from dual;
+
+LENGTH('DATABASE')
+------------------
+                 8
+
+SQL> select instr('Database','b') from dual;
+
+INSTR('DATABASE','B')
+---------------------
+                    5
+
+SQL> select instr('Database','D') from dual;
+
+INSTR('DATABASE','D')
+---------------------
+                    1
+
+SQL> select instr('Database','m') from dual;
+
+INSTR('DATABASE','M')
+---------------------
+                    0
+
+SQL> select lpad(sal,8,'*') from emp where empno=7788;
+
+LPAD(SAL
+--------
+****3000
+
+SQL> select rpad(sal,8,'*') from emp where empno=7788;
+
+RPAD(SAL
+--------
+3000****
+
+SQL> select ltrim('    Database',' ') from dual;
+
+LTRIM('D
+--------
+Database
+
+SQL> select rtrim('    Database.....','.') from dual;
+
+RTRIM('DATAB
+------------
+    Database
+
+SQL> select replace('Database','base','type') from dual;
+
+REPLACE(
+--------
+Datatype
+
+SQL> select replace('Databse','base','type') from dual;
+
+REPLACE
+-------
+Databse
+
+2. NUMBER FUNCTIONS
+
+ROUND()
+
+SQL> select round(35.818,2) from dual;
+
+ROUND(35.818,2)
+---------------
+          35.82
+
+SQL> select round(35.818,0) from dual;
+
+ROUND(35.818,0)
+---------------
+             36
+
+SQL> select round(35.818,-1) from dual; 
+
+ROUND(35.818,-1)
+----------------
+              40
+
+Explanation: (shifts decimal point to the left, round it, multiply with 10, ex: 3.5, 4, 4*10=40) 
+
+
+SQL> select round(35.818,-2) from dual;
+
+ROUND(35.818,-2)
+----------------
+               0
+
+Explanation: (shifts decimal point to the left two times, round it, multiply with 10, ex: 0, 0, 0*10=0) 
+
+SQL> select round(15.193,-1) from dual;
+
+ROUND(15.193,-1)
+----------------
+              20
+
+TRUNCATE()
+
+SQL> select trunc(35.818,2) from dual;
+
+TRUNC(35.818,2)
+---------------
+          35.81
+
+SQL> select trunc(35.818,0) from dual;
+
+TRUNC(35.818,0)
+---------------
+             35
+
+SQL> select trunc(35.818,-1) from dual;
+
+TRUNC(35.818,-1)
+----------------
+              30
+(Ex: 3.5, 3, 3*10=30)
+
+NVL(NULL Value)
+
+SQL> select ename,sal,comm,sal+NVL(comm,0) Totsal
+  2  from emp where sal<2000;
+
+ENAME             SAL       COMM     TOTSAL
+---------- ---------- ---------- ----------
+SMITH             800                   800
+ALLEN            1600        300       1900
+WARD             1250        500       1750
+MARTIN           1250       1400       2650
+TURNER           1500          0       1500
+ADAMS            1100                  1100
+JAMES             950                   950
+MILLER           1300                  1300
+
+8 rows selected.
+
+ABS(-15);=15
+POWER(3,2); =9
+SQRT(25); =5
+EXP(5);= 148.413159
+GREATEST(4,5,17);=17
+LEAST(4,5,17);=4
+MOD(15,7);=1
+FLOOR(24.8);=24
+CEIL(24.8)=25
+SELECT EXTRACT(MONTH FROM SYSDATE) "Month" FROM DUAL;=3
+SELECT EXTRACT(YEAR FROM DATE '2004-07-02') "Year" FROM DUAL;=2004
+
+3. DATE FUNCTIONS 
+
+SQL> select sysdate from dual;
+
+SYSDATE
+---------
+11-FEB-18
+
+SQL> select months_between(sysdate,'09-jan-1983') "exp" from dual;
+
+       exp
+----------
+397.083791
+
+SQL> select sysdate,add_months(sysdate,4) from dual;
+
+SYSDATE   ADD_MONTH
+--------- ---------
+11-FEB-18 11-JUN-18
+
+SQL> select next_day ('11-feb-16', 'Thursday') from dual;
+
+NEXT_DAY(
+---------
+18-FEB-16
+
+SQL> select sysdate,round(sysdate,'month'),round(sysdate,'year'),round(sysdate) from dual;
+
+SYSDATE   ROUND(SYS ROUND(SYS ROUND(SYS
+--------- --------- --------- ---------
+11-FEB-16 01-FEB-16 01-JAN-16 12-FEB-16
+
+SQL> select sysdate,trunc(sysdate,'month') M,trunc(sysdate,'year') Y,trunc(sysdate) D from dual;
+
+SYSDATE   M         Y         D
+--------- --------- --------- ---------
+15-FEB-16 01-FEB-16 01-JAN-16 15-FEB-16
+
+SQL> select greatest('10-Jan-15','10-Jan-16'), least('10-Jan-15','10-Feb-14') from dual;
+
+GREATEST( LEAST('10
+--------- ---------
+10-Jan-16 10-Feb-14
+
+
+4. CONVERSION FUNCTIONS
+
+CONVERSION OF DATE TO CHARACTER:
+
+SQL> select new_time('15-feb-16','pst','gmt') from dual;
+
+NEW_TIME(
+---------
+15-FEB-16
+
+SQL> select ename,job,hiredate,to_char(hiredate,'dd/mm/yy') "Formatted" from emp where
+  2  empno=7788;
+
+ENAME      JOB       HIREDATE  Formatte
+---------- --------- --------- --------
+SCOTT      ANALYST   19-APR-87 19/04/87
+
+SQL> select ename,job,hiredate,to_char(hiredate,'dd/mm/yyyy') "Formatted" from emp where
+  2  empno=7788;
+
+ENAME      JOB       HIREDATE  Formatted
+---------- --------- --------- ----------
+SCOTT      ANALYST   19-APR-87 19/04/1987
+
+SQL> select ename,job,hiredate,to_char(hiredate,'Month,ddth,yyyy') "Formatted" from emp where
+  2  deptno=10;
+
+ENAME      JOB       HIREDATE  Formatted
+---------- --------- --------- -------------------
+CLARK      MANAGER   09-JUN-81 June     ,09th,1981
+KING       PRESIDENT 17-NOV-81 November ,17th,1981
+MILLER     CLERK     23-JAN-82 January  ,23rd,1982
+
+SQL> select ename,job,hiredate,to_char(hiredate,'fmMonth,fmddth,yyyy') "Formatted" from emp where
+  2  deptno=10;
+
+ENAME      JOB       HIREDATE  Formatted
+---------- --------- --------- -------------------
+CLARK      MANAGER   09-JUN-81 June,09th,1981
+KING       PRESIDENT 17-NOV-81 November,17th,1981
+MILLER     CLERK     23-JAN-82 January,23rd,1982
+
+SQL> select to_char(sysdate,'hh:mi:ss p.m.') from dual;
+
+TO_CHAR(SYSDA
+-------------
+11:01:21 a.m.
+
+CONVERSION OF CHARACTER TO DATE:
+
+SQL> select to_date('1-sep-2003','dd/mm/yyyy') from dual;
+
+TO_DATE('
+---------
+01-SEP-03
+
+DECODE:
+
+SQL> select job,sal,decode(job,'ANALYST',sal*1.1,'CLERK',SAL*1.15,'MANAGER',SAL*1.20, SAL ) REVISED_SALARY
+  2  FROM EMP WHERE DEPTNO=10;
+
+JOB              SAL REVISED_SALARY
+--------- ---------- --------------
+MANAGER         2450           2940
+PRESIDENT       5000           5000
+CLERK           1300           1495
+
+
+
+
+
+GROUP FUNCTIONS(AGGREGATE FUNCTIONS):
+
+COUNT,AVG,MAX.MIN,SUM
+
+
+SQL> select count(*) as "No. of employees" from emp;
+
+No. of employees
+----------------
+              14
+SQL> select count(comm) from emp;
+
+COUNT(COMM)
+-----------
+          4
+
+
+SQL> select count(comm) from emp where deptno=10;
+
+COUNT(COMM)
+-----------
+          0
+
+
+CREATING GROUPS OF DATA:
+
+I want to know the salary details of all employees from each department:: 
+
+SQL> select deptno, max(sal),min(sal),avg(sal) from emp group by deptno;
+
+    DEPTNO   MAX(SAL)   MIN(SAL)   AVG(SAL)
+---------- ---------- ---------- ----------
+        30       2850        950 1566.66667
+        20       3000        800       2175
+        10       5000       1300 2916.66667
+
+SQL> select deptno,count(*),max(sal),min(sal),avg(sal) from emp group by deptno;
+
+
+    DEPTNO   COUNT(*)   MAX(SAL)   MIN(SAL)   AVG(SAL)
+---------- ---------- ---------- ---------- ----------
+        30          6       2850        950 1566.66667
+        20          5       3000        800       2175
+        10          3       5000       1300 2916.66667
+
+
+Tell me the salary details of employees of different job categories:: 
+
+SQL> select job,count(*),max(sal),min(sal),avg(sal) from emp group by job;
+
+JOB         COUNT(*)   MAX(SAL)   MIN(SAL)   AVG(SAL)
+--------- ---------- ---------- ---------- ----------
+CLERK              4       1300        800     1037.5
+SALESMAN           4       1600       1250       1400
+PRESIDENT          1       5000       5000       5000
+MANAGER            3       2975       2450 2758.33333
+ANALYST            2       3000       3000       3000
+
+
+I want to know the maximum salary of employees having same name:: 
+
+SQL> select ename,max(sal) from emp group by ename;
+
+ENAME        MAX(SAL)
+---------- ----------
+ALLEN            1600
+JONES            2975
+FORD             3000
+CLARK            2450
+MILLER           1300
+SMITH             800
+WARD             1250
+MARTIN           1250
+SCOTT            3000
+TURNER           1500
+ADAMS            1100
+
+ENAME        MAX(SAL)
+---------- ----------
+BLAKE            2850
+KING             5000
+JAMES             950
+
+14 rows selected.
+
+
+
+
+GROUPING BY MULTIPLE COLUMNS:
+SQL> select deptno,job, sum(sal) from emp
+  2  group by deptno,job;
+
+    DEPTNO JOB         SUM(SAL)
+---------- --------- ----------
+        20 CLERK           1900
+        30 SALESMAN        5600
+        20 MANAGER         2975
+        30 CLERK            950
+        10 PRESIDENT       5000
+        30 MANAGER         2850
+        10 CLERK           1300
+        10 MANAGER         2450
+        20 ANALYST         6000
+
+9 rows selected.
+
+
+
+ILLEGAL QUERIES:
+
+SQL> select deptno,count(ename) from emp;
+select deptno,count(ename) from emp
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+SQL> select deptno,max(sal) from emp group by ename;
+select deptno,max(sal) from emp group by ename
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+
+SQL> select deptno,max(sal) from emp where max(sal)>2900 group by deptno;
+select deptno,max(sal) from emp where max(sal)>2900 group by deptno
+                                      *
+ERROR at line 1:
+ORA-00934: group function is not allowed here
+
+
+HAVING CLAUSE:
+
+SQL> select deptno,max(sal) from emp group by deptno ;
+
+    DEPTNO   MAX(SAL)
+---------- ----------
+        30       2850
+        20       3000
+        10       5000
+
+SQL> select deptno,max(sal) from emp group by deptno
+  2  having max(sal)>2900;
+
+    DEPTNO   MAX(SAL)
+---------- ----------
+        20       3000
+        10       5000
+
+SQL> select max(avg(sal)) from emp group by deptno;
+
+MAX(AVG(SAL))
+-------------
+   2916.66667
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

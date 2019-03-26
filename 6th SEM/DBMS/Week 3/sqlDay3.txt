@@ -1,0 +1,387 @@
+SQL LAB DAY 3
+
+CONSTRAINTS:
+
+NOT NULL - Indicates that a column cannot store NULL value
+UNIQUE - Ensures that each row for a columncre, must have a unique value
+PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Ensures that a column (or combination of two or more columns) have a
+unique identity which helps to find a particular record in a table more easily and quickly
+FOREIGN KEY - Ensure the referential integrity of the data in one table to match values in another table
+CHECK - Ensures that the value in a column meets a specific condition
+DEFAULT - Specifies a default value for a column
+
+Creation of a PRIMARY KEY:  
+
+SQL> CREATE TABLE Persons
+  2  (
+  3  P_Id int NOT NULL PRIMARY KEY,
+  4  LastName varchar(25) NOT NULL,
+  5  FirstName varchar(25),
+  6  Address varchar(25),
+  7  City varchar(25)
+  8  );
+
+Table created.
+
+Defining a PRIMARY KEY constraint on multiple columns: 
+
+SQL> CREATE TABLE Person
+  2  (
+  3  P_Id int NOT NULL,
+  4  LastName varchar(255) NOT NULL,
+  5  FirstName varchar(255),
+  6  Address varchar(255),
+  7  City varchar(255),
+  8  CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)
+  9  )
+ 10  ;
+
+Table created.
+
+SQL> desc persons;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ P_ID                                      NOT NULL NUMBER(38)
+ LASTNAME                                  NOT NULL VARCHAR2(255)
+ FIRSTNAME                                          VARCHAR2(255)
+ ADDRESS                                            VARCHAR2(255)
+ CITY                                               VARCHAR2(255)
+
+TO TYPE 'PK_SOMETHING' IS NOT MANDATORY EVERYTIME, ANY NAME COULD GO,
+BUT THIS IS A SPECIFIC NAME GIVEN TO PRIMARY KEY TO IDENTIFY IT:  
+
+SQL> CREATE TABLE Person
+  2  (
+  3  P_Id int NOT NULL,LastName varchar(255) NOT NULL,
+  4  FirstName varchar(255),Address varchar(255),City varchar(255),
+  5  CONSTRAINT Person PRIMARY KEY (P_Id,LastName)
+  6  );
+
+Table created.
+
+ PRIMARY KEY Constraint on ALTER TABLE in SQL : 
+
+SQL> ALTER TABLE stu
+  2  ADD PRIMARY KEY (roll);
+
+Table altered.
+
+defining a PRIMARY KEY constraint on multiple columns
+
+SQL> ALTER TABLE stu1
+  2  ADD CONSTRAINT pk_stu1roll PRIMARY KEY (roll,Name);
+
+Table altered.
+
+SQL> desc stu1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLL                                      NOT NULL NUMBER
+ NAME                                      NOT NULL VARCHAR2(20)
+
+To DROP a PRIMARY KEY Constraint:
+
+SQL> ALTER TABLE Persons DROP PRIMARY KEY;
+
+Table altered.
+
+SQL> ALTER TABLE Person DROP CONSTRAINT pk_PersonID;
+
+Table altered.
+
+FOREIGN KEY CONSTRAINTS:
+
+SQL> CREATE TABLE Persons
+  2  (
+  3  P_Id int NOT NULL PRIMARY KEY,
+  4  LastName varchar(255) NOT NULL,
+  5  FirstName varchar(255),
+  6  Address varchar(255),
+  7  City varchar(255)
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE Orders
+  2  (
+  3  O_Id int NOT NULL,OrderNo int NOT NULL,P_Id int,
+  4  PRIMARY KEY (O_Id),
+  5  CONSTRAINT fk_persons FOREIGN KEY (P_Id)
+  6  REFERENCES Persons(P_Id)
+  7  );
+
+Table created.
+
+SQL> desc orders;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ O_ID                                      NOT NULL NUMBER(38)
+ ORDERNO                                   NOT NULL NUMBER(38)
+ P_ID                                               NUMBER(38)
+
+SQL> drop table orders;
+
+Table dropped.
+
+SQL> CREATE TABLE Orders
+  2  (
+  3  O_Id int NOT NULL,OrderNo int NOT NULL,P_Id int,
+  4  PRIMARY KEY (O_Id),
+  5  CONSTRAINT fk_ord_per FOREIGN KEY (P_Id)
+  6  REFERENCES Persons(P_Id)
+  7  );
+
+Table created.
+
+SQL> drop table orders;
+
+Table dropped.
+
+SQL> CREATE TABLE Orders
+  2  (
+  3  O_Id int NOT NULL,OrderNo int NOT NULL,P_Id int,
+  4  PRIMARY KEY (O_Id),
+  5  CONSTRAINT Orders FOREIGN KEY (P_Id)
+  6  REFERENCES Persons(P_Id)
+  7  );
+
+Table created.
+
+SQL> desc orders;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ O_ID                                      NOT NULL NUMBER(38)
+ ORDERNO                                   NOT NULL NUMBER(38)
+ P_ID                                               NUMBER(38)
+
+SQL FOREIGN KEY Constraint on ALTER TABLE:
+
+ALTER TABLE Orders
+ADD CONSTRAINT fk_PerOrders
+FOREIGN KEY (P_Id)
+REFERENCES Persons(P_Id);
+
+To DROP a FOREIGN KEY Constraint: 
+
+ALTER TABLE Orders
+DROP CONSTRAINT fk_PerOrders; 
+
+***********************************************************************
+
+SQL> drop table persons;
+drop table persons
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> drop table orders;
+
+Table dropped.
+
+SQL> drop table persons;
+
+Table dropped.
+
+CHECK CONSTRAINTS:
+
+SQL> create table ndr1 (id int check(id>1));
+
+Table created.
+
+SQL> insert into ndr1 values(2);
+
+1 row created.
+
+SQL> insert into ndr1 values(1);
+insert into ndr1 values(1)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.SYS_C0011310) violated
+
+SQL> create table ndr2 (id int not null, name varchar2(20),
+  2  constraint chk_ndr2 check((id>1 and name='nila')));
+
+Table created.
+
+SQL CHECK Constraint on ALTER TABLE:
+
+To create a CHECK constraint on the "P_Id" column when the table is already created, use the following SQL:
+
+SQL>ALTER TABLE Persons ADD CHECK (P_Id>0);
+
+To allow naming of a CHECK constraint, and for defining a CHECK constraint on multiple columns, use the following SQL syntax:
+
+SQL>ALTER TABLE Persons ADD CONSTRAINT chk_Person CHECK (P_Id>0 AND City='Sandnes'); 
+
+SQL> CREATE TABLE student
+  2  (
+  3  Id int NOT NULL, Name varchar(255),
+  4  Address varchar(255),City varchar(255) DEFAULT 'Kolkata'
+  5  );
+
+Table created.
+SQL> insert into student values(1,'abc','saltlake',default);
+
+1 row created.
+
+SQL> select * from student;
+
+ID  NAME  ADDRESS  CITY
+1   abc  saltlake  kolkata 
+
+***********************************
+
+JOIN:
+
+
+SQL> create table projects(pno number,pname varchar2(20),dno number);
+
+Table created.
+
+SQL> alter table projects add primary key(pno);
+
+Table altered.
+
+SQL> create table departments(dno number primary key,dloc varchar2(20));
+
+Table created.
+
+SQL> ALTER TABLE projects
+  2  ADD CONSTRAINT fk_ProDepts
+  3  FOREIGN KEY (dno)
+  4  REFERENCES Departments(dno);
+
+Table altered.
+
+SQL> select * from departments;
+
+       DNO DLOC
+---------- --------------------
+         1 Kol
+         2 Kol
+         3 Pune
+         4 Delhi
+         5 Kol
+
+SQL> select * from projects;
+
+       PNO PNAME                       DNO
+---------- -------------------- ----------
+         1 Lib-Mngt                      2
+         2 Hos-Mngt                      3
+         3 Wireless                      4
+
+CARTESIAN PRODUCT:
+
+SQL> select * from projects,departments;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          1 Kol
+         1 Lib-Mngt                      2          2 Kol
+         1 Lib-Mngt                      2          3 Pune
+         1 Lib-Mngt                      2          4 Delhi
+         1 Lib-Mngt                      2          5 Kol
+         2 Hos-Mngt                      3          1 Kol
+         2 Hos-Mngt                      3          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         2 Hos-Mngt                      3          4 Delhi
+         2 Hos-Mngt                      3          5 Kol
+         3 Wireless                      4          1 Kol
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         3 Wireless                      4          2 Kol
+         3 Wireless                      4          3 Pune
+         3 Wireless                      4          4 Delhi
+         3 Wireless                      4          5 Kol
+
+15 rows selected.
+
+EQUI JOIN:
+
+SQL> select * from projects,departments
+  2  where projects.dno=departments.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+
+
+     SQL> select * from projects inner join departments
+  2  on projects.dno=departments.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+
+OUTER JOIN:
+
+SQL> select * from projects left outer join departments
+  2  on projects.dno=departments.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+
+
+SQL> select * from departments left join projects
+  2  on projects.dno=departments.dno;
+
+       DNO DLOC                        PNO PNAME                       DNO
+---------- -------------------- ---------- -------------------- ----------
+         2 Kol                           1 Lib-Mngt                      2
+         3 Pune                          2 Hos-Mngt                      3
+         4 Delhi                         3 Wireless                      4
+         5 Kol
+         1 Kol
+
+SQL> select * from projects right join departments
+  2  on projects.dno=departments.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+                                                    5 Kol
+                                                    1 Kol
+
+SQL> select * from projects full outer join departments
+  2  on projects.dno=departments.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+                                                    1 Kol
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+                                                    5 Kol
+CREATING ALIASES:
+
+SQL> select * from projects p inner join departments d
+  2  on p.dno=d.dno;
+
+       PNO PNAME                       DNO        DNO DLOC
+---------- -------------------- ---------- ---------- --------------------
+         1 Lib-Mngt                      2          2 Kol
+         2 Hos-Mngt                      3          3 Pune
+         3 Wireless                      4          4 Delhi
+
+SELF JOIN:
+
+SQL> select e1.ename,e1.sal from emp e1,emp e2
+  2  where (e1.sal>e2.sal) and(e2.ename='SCOTT');
+
+ENAME             SAL
+---------- ----------
+KING             5000
+
+

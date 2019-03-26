@@ -1,0 +1,103 @@
+
+SQL> select sname from sailors
+  2  where sid in
+  3  ( select sid from reserves where bid=103);
+
+SNAME
+---------
+Dustin
+Lubber
+Horatio
+
+SQL> select sname from sailors
+  2  where sid in
+  3  ( select sid from reserves where bid in
+  4  ( select bid from boats where color='red'));
+
+SNAME
+---------
+Dustin
+Lubber
+Horatio
+
+SQL> select bname, color from boats
+  2  where bid in
+  3  ( select bid from reserves where sid in
+  4  ( select sid from Sailors where sname='Lubber'));
+
+BNAME     COLOR
+--------- ------
+Interlake red
+Clipper   green
+Marine    red
+
+SQL> select sid, sname from sailors
+  2  where sid in ( select sid from reserves );
+
+       SID SNAME
+---------- ---------
+        22 Dustin
+        31 Lubber
+        64 Horatio
+        74 Horatio
+
+SQL> select count(*) from sailors
+  2  where age>39 and age<61 and sid in
+  3  ( select sid from reserves where bid in
+  4  ( select bid from boats where color='red' ));
+
+  COUNT(*)
+----------
+         2
+
+SQL> select sid, sname from sailors
+  2  where sid in
+  3  ( select sid from reserves where bid in
+  4  ( select bid from boats where color in ('red', 'green')));
+
+       SID SNAME
+---------- ---------
+        22 Dustin
+        31 Lubber
+        64 Horatio
+        74 Horatio
+
+SQL> select sid, sname from sailors
+  2  where sid in
+  3  ( select sid from reserves where bid in
+  4  ( select bid from boats where color='red'))
+  5  and sid in
+  6  ( select sid from reserves where bid in
+  7  ( select bid from boats where color='green'));
+
+       SID SNAME
+---------- ---------
+        22 Dustin
+        31 Lubber
+
+
+SQL> select sid, sname from sailors
+  2  where sid in
+  3  ( select sid from reserves group by sid having count(sid)>1);
+
+       SID SNAME
+---------- ---------
+        22 Dustin
+        31 Lubber
+        64 Horatio
+
+SQL> select day from reserves
+  2  where bid=102 and sid in
+  3  ( select sid from sailors where sname='Dustin' );
+
+DAY
+---------
+10-OCT-98
+
+SQL> select sum(count(*)) from sailors
+  2  group by rating
+  3  having count(*)>1;
+
+SUM(COUNT(*))
+-------------
+            7

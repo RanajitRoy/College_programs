@@ -1,0 +1,66 @@
+
+SQL> select last_name, dname as Department, job_id
+  2  from new_dep right outer join new_emp
+  3  on new_dep.dno=new_emp.dno;
+
+LAST_NAME                 DEPAR JOB_ID
+------------------------- ----- ----------
+Higgins                   CSE   AC_MGR
+Lorentz                   CSE   IT_PROG
+Hunold                    CSE   IT_PROG
+Baer                      ECE   PR_REP
+Austin                    ECE   IT_PROG
+Pataballa                 IT    IT_PROG
+Ernst                     IT    IT_PROG
+Greenberg                       FI_MGR
+
+8 rows selected.
+
+
+SQL> select dname, count(*) as count, avg(salary)
+  2  from new_dep inner join new_emp
+  3  on new_dep.dno=new_emp.dno group by dname;
+
+DNAME      COUNT AVG(SALARY)
+----- ---------- -----------
+IT             2        5400
+CSE            3        8400
+ECE            2        7400
+
+SQL> select dname, job_id as job, count(*)
+  2  from new_dep inner join new_emp
+  3  on new_dep.dno=new_emp.dno group by dname, job_id;
+
+DNAME JOB          COUNT(*)
+----- ---------- ----------
+ECE   IT_PROG             1
+IT    IT_PROG             2
+CSE   IT_PROG             2
+ECE   PR_REP              1
+CSE   AC_MGR              1
+
+
+SQL> select substr(first_name,1,1) as F, count(*) from new_emp
+  2  group by substr(first_name,1,1) order by f desc;
+
+F   COUNT(*)
+- ----------
+V          1
+S          1
+N          1
+H          1
+D          2
+B          1
+A          1
+
+7 rows selected.
+
+SQL> select last_name, salary from new_emp
+  2  where salary>( select avg(salary) from new_emp );
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Hunold                          9000
+Greenberg                      12000
+Baer                           10000
+Higgins                        12000
