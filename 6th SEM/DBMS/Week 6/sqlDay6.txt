@@ -1,0 +1,607 @@
+
+------------------------FUNCTIONS-------------
+
+SYNTAX:
+
+CREATE [OR REPLACE] FUNCTIONS function_name
+(Parameter 1, parameter 2..) RETURN datatype IS
+
+Declare variable, constant etc..
+
+Begin
+
+    Executable statements
+    RETURN (return value); 
+
+end; 
+
+
+
+
+------------------PROCEDURE----------------
+
+SYNTAX:
+
+CREATE [OR REPLACE] PROCEDURE procedure_name 
+(Parameter 1, parameter 2..) IS
+
+Declare variable, constant etc..
+
+Begin
+
+    Executable statements
+   
+end; 
+
+
+
+
+
+------------------PROCEDURE Examples----------------
+
+SQL> CREATE OR REPLACE PROCEDURE greetings
+  2  IS
+  3  BEGIN
+  4     dbms_output.put_line('Hello World!');
+  5  END;
+  6  /
+
+Procedure created.
+
+SQL> set serveroutput on;
+SQL> /
+
+Procedure created.
+
+SQL> execute greetings;
+Hello World!
+
+PL/SQL procedure successfully completed.
+
+SQL> BEGIN
+  2     greetings;
+  3  END;
+  4  /
+Hello World!
+
+PL/SQL procedure successfully completed.
+
+
+DROP PROCEDURE:
+
+SQL> drop procedure greetings;
+
+Procedure dropped.
+
+Parameter Modes in PL/SQL Subprograms:
+
+IN, OUT, IN OUT 
+
+Example 1:
+
+SQL> DECLARE
+  2     a number;
+  3     b number;
+  4     c number;
+  5
+  6  PROCEDURE findMin(x IN number, y IN number, z OUT number) IS
+  7  BEGIN
+  8     IF x < y THEN
+  9        z:= x;
+ 10     ELSE
+ 11        z:= y;
+ 12     END IF;
+ 13  END;
+ 14
+ 15  BEGIN
+ 16     a:= 23;
+ 17     b:= 45;
+ 18     findMin(a, b, c);
+ 19     dbms_output.put_line(' Minimum of (23, 45) : ' || c);
+ 20  END;
+ 21  /
+Minimum of (23, 45) : 23
+
+PL/SQL procedure successfully completed.
+
+Example 2:
+
+SQL> DECLARE
+  2     a number;
+  3  PROCEDURE squareNum(x IN OUT number) IS
+  4  BEGIN
+  5    x := x * x;
+  6  END;
+  7  BEGIN
+  8     a:= 23;
+  9     squareNum(a);
+ 10     dbms_output.put_line(' Square of (23): ' || a);
+ 11  END;
+ 12  /
+Square of (23): 529
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+-----MORE EXAMPLES ON FUNCTIONS--------
+
+FUNCTION CREATION & CALLING:
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                   500
+         2 Chetan                       20 Delhi                      1500
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2250
+
+7 rows selected.
+
+A FUNCTION THAT ACCEPTS TWO NUMBERS, SUM IT AND STORE THE COMPUTED VALUE IN C
+
+SQL> create or replace function fsum(a number, b number)
+  2  return number is c number;
+  3  begin
+  4  c:=a+b;
+  5  return c;
+  6  end;
+  7  /
+
+Function created.
+
+SQL> select fsum(10,20) from dual;
+
+FSUM(10,20)
+-----------
+         30
+
+
+SQL> select fsum(salary,500) incr from customers;
+
+      INCR
+----------
+      1000
+      2000
+      1375
+      5000
+      1750
+      3000
+      2750
+
+7 rows selected.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1500
+         2 Chetan                       20 Delhi                      2500
+         3 Kapil                        28 Delhi                      1875
+         4 Bikash                       25 Kolkata                    5500
+         5 Chaitali                     28 Kolkata                    2250
+         6 Sadhana                      30 Pune                       3500
+         7 Keshav                       39 Mumbai                     3250
+
+7 rows selected.
+
+
+
+
+SQL> CREATE OR REPLACE FUNCTION totalCustomers
+  2  RETURN number IS
+  3     total number(2) := 0;
+  4  BEGIN
+  5     SELECT count(*) into total
+  6     FROM customers;
+  7
+  8     RETURN total;
+  9  END;
+ 10  /
+
+Function created.
+
+SQL> DECLARE
+  2     c number(2);
+  3  BEGIN
+  4     c := totalCustomers();
+  5     dbms_output.put_line('Total no. of Customers: ' || c);
+  6  END;
+  7  /
+Total no. of Customers: 7
+
+PL/SQL procedure successfully completed.
+
+
+SQL> CREATE OR REPLACE FUNCTION maxCustomers
+  2  RETURN number IS
+  3     total number(20) := 0;
+  4  BEGIN
+  5     SELECT max(salary) into total
+  6     FROM customers;
+  7
+  8     RETURN total;
+  9  END;
+ 10  /
+
+Function created.
+
+SQL> DECLARE
+  2     c number(20);
+  3  BEGIN
+  4     c := maxCustomers();
+  5     dbms_output.put_line('Maximum salary of Customers: ' || c);
+  6  END;
+  7  /
+Maximum salary of Customers: 4500
+
+PL/SQL procedure successfully completed.
+
+
+
+-------------PARAMETERIZED FUNCTIONS-----------:
+
+Example 1:ADDITION OF TWO 
+
+SQL> DECLARE
+  2     a number;
+  3     b number;
+  4     c number;
+  5
+  6  FUNCTION addition(x IN number, y IN number)
+  7  RETURN number
+  8  IS
+  9      c number;
+ 10  BEGIN
+ 11     c:=a+b;
+ 12
+ 13     RETURN c;
+ 14  END;
+
+
+
+ 15  BEGIN
+ 16     a:= 20;
+ 17     b:= 50;
+ 18
+ 19     c := addition(a, b);
+ 20     dbms_output.put_line(' Addition of (20,50): ' || c);
+ 21  END;
+ 22  /
+Addition of (20,50): 70
+
+PL/SQL procedure successfully completed.
+
+Example 2: MAXIMUM NUMBER BETWEEN TWO 
+
+SQL> DECLARE
+  2     a number;
+  3     b number;
+  4     c number;
+  5  FUNCTION findMax(x IN number, y IN number)
+  6  RETURN number
+  7  IS
+  8      z number;
+  9  BEGIN
+ 10     IF x > y THEN
+ 11        z:= x;
+ 12     ELSE
+ 13        Z:= y;
+ 14     END IF;
+ 15
+ 16     RETURN z;
+ 17  END;
+
+
+ 18  BEGIN
+ 19     a:= 23;
+ 20     b:= 45;
+ 21
+ 22     c := findMax(a, b);
+ 23     dbms_output.put_line(' Maximum of (23,45): ' || c);
+ 24  END;
+ 25  /
+Maximum of (23,45): 45
+
+PL/SQL procedure successfully completed.
+
+
+
+------------------------CURSORS------------------------
+-----------Implicit Cursor--------------
+
+SQL> DECLARE
+  2     total_rows number(2);
+  3  BEGIN
+  4     UPDATE customers
+  5     SET salary = salary + 500;
+  6     IF sql%notfound THEN
+  7        dbms_output.put_line('no customers selected');
+  8     ELSIF sql%found THEN
+  9        total_rows := sql%rowcount;
+ 10        dbms_output.put_line( total_rows || ' customers selected ');
+ 11     END IF;
+ 12  END;
+ 13  /
+7 customers selected
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  2000
+         2 Chetan                       20 Delhi                      3000
+         3 Kapil                        28 Delhi                      2375
+         4 Bikash                       25 Kolkata                    6000
+         5 Chaitali                     28 Kolkata                    2750
+         6 Sadhana                      30 Pune                       4000
+         7 Keshav                       39 Mumbai                     3750
+
+7 rows selected.
+
+------------EXPLICIT CURSORS--------------
+SQL> DECLARE
+  2     c_id customers.id%type;
+  3     c_name customers.name%type;
+  4     c_addr customers.address%type;
+  5     CURSOR c_customers is
+  6        SELECT id, name, address FROM customers;
+
+  7  BEGIN
+  8     OPEN c_customers;
+  9     LOOP
+ 10        FETCH c_customers into c_id, c_name, c_addr;
+ 11        EXIT WHEN c_customers%notfound;
+ 12        dbms_output.put_line('Id'||' '||c_id ||' ' || c_name || ' ' ||'is from'||' '|| c_addr);
+ 13     END LOOP;
+ 14     CLOSE c_customers;
+ 15  END;
+ 16  /
+Id 1 Ramesh is from Ahmedabad
+Id 2 Chetan is from Delhi
+Id 3 Kapil is from Delhi
+Id 4 Bikash is from Kolkata
+Id 5 Chaitali is from Kolkata
+Id 6 Sadhana is from Pune
+Id 7 Keshav is from Mumbai
+
+PL/SQL procedure successfully completed.
+
+
+
+
+--------CURSOR BASED RECORD DATATYPE VARIABLES----------
+
+--%ROWTYPE ATTRIBUTE--
+
+CURSOR 
+
+sQL> declare
+  2  vcust customers%rowtype;
+  3  vid number;
+  4  vcnt number;
+  5  begin
+  6  vid:=&id;
+  7  select count(*) into vcnt from customers
+  8  where id=vid;
+  9  if vcnt=1 then
+ 10  select * into vcust from customers where id=vid;
+ 11  dbms_output.put_line(vid||'-'||vcust.name||' '||'is from'||vcust.address);
+ 12  else
+ 13   dbms_output.put_line(vid||'-'||'is invalid');
+ 14  end if;
+ 15  end;
+ 16  /
+Enter value for id: 6
+old   6: vid:=&id;
+new   6: vid:=6;
+6-Sadhana is fromPune
+
+PL/SQL procedure successfully completed.
+
+----------EXAMPLE OF %TYPE ATTRIBUTE-------
+
+SQL> declare
+  2  vcust customers%rowtype;
+  3  vid customers.id%type;
+  4  vcnt number;
+  5  begin
+  6  vid:=&id;
+  7  select id into vid from customers where
+  8  id=vid;
+  9  select count(*) into vcnt from customers
+ 10  where id=vid;
+ 11  if vcnt=1 then
+ 12  select * into vcust from customers where id=vid;
+ 13  dbms_output.put_line(vid||'-'||vcust.name||' '||'is from'||vcust.address);
+ 14  else
+ 15   dbms_output.put_line(vid||'-'||'is invalid');
+ 16  end if;
+ 17  end;
+ 18  /
+Enter value for id: 3
+old   6: vid:=&id;
+new   6: vid:=3;
+3-Kapil is fromDelhi
+
+PL/SQL procedure successfully completed.
+
+--------USE OF %TYPE(DATA NOT FOUND)---------
+
+SQL> declare
+  2  vcust customers%rowtype;
+  3  vid customers.id%type;
+  4  vcnt number;
+  5  begin
+  6  vid:=&id;
+  7  select id into vid from customers where
+  8  id=vid;
+  9  select count(*) into vcnt from customers
+ 10  where id=vid;
+ 11  if vcnt=1 then
+ 12  select * into vcust from customers where id=vid;
+ 13  dbms_output.put_line(vid||'-'||vcust.name||' '||'is from'||vcust.address);
+ 14  else
+ 15   dbms_output.put_line(vid||'-'||'is invalid');
+ 16  end if;
+ 17  end;
+ 18  /
+Enter value for id: 10
+old   6: vid:=&id;
+new   6: vid:=10;
+declare
+*
+ERROR at line 1:
+ORA-01403: no data found
+ORA-06512: at line 7
+
+-------- INVALID CUSTOMER(NO %TYPE USED)-----
+
+SQL> declare
+  2  vcust customers%rowtype;
+  3  vid number;
+  4  vcnt number;
+  5  begin
+  6  vid:=&id;
+  7  select count(*) into vcnt from customers
+  8  where id=vid;
+  9  if vcnt=1 then
+ 10  select * into vcust from customers where id=vid;
+ 11  dbms_output.put_line(vid||'-'||vcust.name||' '||'is from'||vcust.address);
+ 12  else
+ 13   dbms_output.put_line(vid||'-'||'is invalid');
+ 14  end if;
+ 15  end;
+ 16  /
+Enter value for id: 10
+old   6: vid:=&id;
+new   6: vid:=10;
+10-is invalid
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+------EXCEPTIONS-----------
+
+SQL> DECLARE
+  2     c_id customers.id%type := &id;
+  3     c_name  customers.name%type;
+  4     c_addr customers.address%type;
+  5  BEGIN
+  6     SELECT  name, address INTO  c_name, c_addr
+  7     FROM customers
+  8     WHERE id = c_id;
+  9
+ 10     DBMS_OUTPUT.PUT_LINE ('Name: '||  c_name);
+ 11     DBMS_OUTPUT.PUT_LINE ('Address: ' || c_addr);
+ 12  EXCEPTION
+ 13     WHEN no_data_found THEN
+ 14        dbms_output.put_line('No such customer!');
+ 15     WHEN others THEN
+ 16        dbms_output.put_line('Error!');
+ 17  END;
+ 18  /
+Enter value for id: 7
+old   2:    c_id customers.id%type := &id;
+new   2:    c_id customers.id%type := 7;
+Name: Keshav
+Address: Mumbai
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for id: 9
+old   2:    c_id customers.id%type := &id;
+new   2:    c_id customers.id%type := 9;
+No such customer!
+
+PL/SQL procedure successfully completed.
+
+-----------Raising User Defined Exceptions---------
+syntax:
+
+DECLARE
+   exception_name EXCEPTION;
+BEGIN
+   IF condition THEN
+      RAISE exception_name;
+   END IF;
+EXCEPTION
+   WHEN exception_name THEN
+   statement;
+END;
+
+----------User-defined Exceptions--------
+
+syntax:
+
+DECLARE
+   my-exception EXCEPTION;
+
+SQL> DECLARE
+  2     c_id customers.id%type := &cc_id;
+  3     c_name  customers.name%type;
+  4     c_addr customers.address%type;
+  5
+  6     -- user defined exception
+  7     ex_invalid_id  EXCEPTION;
+  8  BEGIN
+  9     IF c_id <= 0 THEN
+ 10        RAISE ex_invalid_id;
+ 11     ELSE
+ 12        SELECT  name, address INTO  c_name, c_addr
+ 13        FROM customers
+ 14        WHERE id = c_id;
+ 15
+ 16        DBMS_OUTPUT.PUT_LINE ('Name: '||  c_name);
+ 17        DBMS_OUTPUT.PUT_LINE ('Address: ' || c_addr);
+ 18     END IF;
+ 19  EXCEPTION
+ 20     WHEN ex_invalid_id THEN
+ 21        dbms_output.put_line('ID must be greater than zero!');
+ 22     WHEN no_data_found THEN
+ 23        dbms_output.put_line('No such customer!');
+ 24     WHEN others THEN
+ 25        dbms_output.put_line('Error!');
+ 26  END;
+ 27  /
+
+Enter value for cc_id: 3
+old   2:    c_id customers.id%type := &cc_id;
+new   2:    c_id customers.id%type := 3;
+Name: Kapil
+Address: Delhi
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for cc_id: 9
+old   2:    c_id customers.id%type := &cc_id;
+new   2:    c_id customers.id%type := 9;
+No such customer!
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for cc_id: 0
+old   2:    c_id customers.id%type := &cc_id;
+new   2:    c_id customers.id%type := 0;
+ID must be greater than zero!
+
+PL/SQL procedure successfully completed.
+
+

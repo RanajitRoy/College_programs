@@ -1,0 +1,385 @@
+PL/SQL BASICS:
+
+--------------PRINT A MESSAGE
+
+SQL> DECLARE
+  2     message  varchar2(20):= 'Hello, World!';
+  3  BEGIN
+  4     dbms_output.put_line(message);
+  5  END;
+  6  /
+
+PL/SQL procedure successfully completed.
+
+SQL> set serveroutput on;
+SQL> /
+Hello, World!
+
+PL/SQL procedure successfully completed.
+
+Example 2: SIMPLE PROGRAMS
+
+1) ADDITION OF TWO NUMBERS(user given inputs):
+
+SQL> DECLARE
+  2     a integer := &a;
+  3     b integer := &b;
+  4     c integer;
+  5  BEGIN
+  6     c := a + b;
+  7     dbms_output.put_line('Value of c: ' || c);
+  8
+  9  END;
+ 10  /
+Enter value for a: 30
+old   2:    a integer := &a;
+new   2:    a integer := 30;
+Enter value for b: 20
+old   3:    b integer := &b;
+new   3:    b integer := 20;
+Value of c: 50
+
+PL/SQL procedure successfully completed.
+
+2) ADDITION OF TWO NUMBERS (showing floating point values):
+
+SQL> DECLARE
+  2     a integer := 10;
+  3     b integer := 20;
+  4     c integer;
+  5     f real;
+  6  BEGIN
+  7     c := a + b;
+  8     dbms_output.put_line('Value of c: ' || c);
+  9     f := 70.0/3.0;
+ 10     dbms_output.put_line('Value of f: ' || f);
+ 11  END;
+ 12  /
+Value of c: 30
+Value of f: 23.33333333333333333333333333333333333333
+
+PL/SQL procedure successfully completed.
+
+-------------SCOPE OF VARIABLES:
+
+SQL> DECLARE
+  2     -- Global variables
+  3     num1 number := 50;
+  4     num2 number := 100;
+  5  BEGIN
+  6     dbms_output.put_line('Outer Variable num1: ' || num1);
+  7     dbms_output.put_line('Outer Variable num2: ' || num2);
+  8     DECLARE
+  9        -- Local variables
+ 10        num1 number := 10;
+ 11        num2 number := 20;
+ 12     BEGIN
+ 13        dbms_output.put_line('Inner Variable num1: ' || num1);
+ 14        dbms_output.put_line('Inner Variable num2: ' || num2);
+ 15     END;
+ 16  END;
+ 17  /
+Outer Variable num1: 50
+Outer Variable num2: 100
+Inner Variable num1: 10
+Inner Variable num2: 20
+
+PL/SQL procedure successfully completed.
+
+------------------ASSIGNING SQL QUERY RESULTS TO PL/SQL VARIABLES:
+
+SQL> SElect * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                   500
+         2 Chetan                       20 Delhi                      1500
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2250
+
+7 rows selected.
+
+SQL> DECLARE
+  2     c_id customers.id%type := 2;
+  3     c_name  customers.name%type;
+  4     c_addr customers.address%type;
+  5     c_sal  customers.salary%type;
+  6  BEGIN
+  7     SELECT name, address, salary INTO c_name, c_addr, c_sal
+  8     FROM customers
+  9     WHERE id = c_id;
+ 10
+ 11     dbms_output.put_line
+ 12     ('Customer ' ||c_name || ' from ' || c_addr || ' earns ' || c_sal);
+ 13  END;
+ 14  /
+Customer Chetan from Delhi earns 1500
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     c_id customers.id%type := &id;
+  3     c_name  customers.name%type;
+  4     c_addr customers.address%type;
+  5     c_sal  customers.salary%type;
+  6  BEGIN
+  7     SELECT name, address, salary INTO c_name, c_addr, c_sal
+  8     FROM customers
+  9     WHERE id = c_id;
+ 10
+ 11     dbms_output.put_line
+ 12     ('Customer ' ||c_name || ' from ' || c_addr || ' earns ' || c_sal);
+ 13  END;
+ 14  /
+Enter value for id: 1
+old   2:    c_id customers.id%type := &id;
+new   2:    c_id customers.id%type := 1;
+Customer Ramesh from Ahmedabad earns 500
+
+PL/SQL procedure successfully completed.
+
+---------DECLARING A CONSTANT: 
+
+SQL> DECLARE
+  2     -- constant declaration
+  3     pi constant number := 3.141592654;
+  4     -- other declarations
+  5     radius number(5,2);
+  6     dia number(5,2);
+  7     circumference number(7, 2);
+  8     area number (10, 2);
+  9  BEGIN
+ 10     -- processing
+ 11     radius := 9.5;
+ 12     dia := radius * 2;
+ 13     circumference := 2.0 * pi * radius;
+ 14     area := pi * radius * radius;
+ 15     -- output
+ 16     dbms_output.put_line('Radius: ' || radius);
+ 17     dbms_output.put_line('Diameter: ' || dia);
+ 18     dbms_output.put_line('Circumference: ' || circumference);
+ 19     dbms_output.put_line('Area: ' || area);
+ 20  END;
+ 21  /
+Radius: 9.5
+Diameter: 19
+Circumference: 59.69
+Area: 283.53
+
+PL/SQL procedure successfully completed.
+
+-----------IF THEN STATEMENT
+
+SQL> DECLARE
+  2     a number(2) := 10;
+  3  BEGIN
+  4     a:= 10;
+  5     IF( a < 20 ) THEN
+  6
+  7        dbms_output.put_line('a is less than 20 ' );
+  8     END IF;
+  9     dbms_output.put_line('value of a is : ' || a);
+ 10  END;
+ 11  /
+a is less than 20
+value of a is : 10
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     c_id customers.id%type := 1;
+  3     c_sal  customers.salary%type;
+  4  BEGIN
+  5     SELECT  salary
+  6     INTO  c_sal
+  7     FROM customers
+  8     WHERE id = c_id;
+  9     IF (c_sal <= 2000) THEN
+ 10        UPDATE customers
+ 11        SET salary =  salary + 1000
+ 12           WHERE id = c_id;
+ 13        dbms_output.put_line ('Salary updated');
+ 14     END IF;
+ 15  END;
+ 16  /
+Salary updated
+
+PL/SQL procedure successfully completed.
+
+----------IF THEN ELSE STATEMENT----------
+
+SQL> DECLARE
+  2     a number(3) := 100;
+  3  BEGIN
+  4
+  5     IF( a < 100 ) THEN
+  6
+  7        dbms_output.put_line('you have a red car ' );
+  8     ELSE
+  9        dbms_output.put_line('you have a green car ' );
+ 10     END IF;
+ 11     dbms_output.put_line('value of a is : ' || a);
+ 12  END;
+ 13  /
+you have a green car
+value of a is : 100
+
+PL/SQL procedure successfully completed.
+
+--------CASE STATEMENT----
+
+SQL> DECLARE
+  2     grade char(1) := 'A';
+  3  BEGIN
+  4     CASE grade
+  5        when 'A' then dbms_output.put_line('Excellent');
+  6        when 'B' then dbms_output.put_line('Very good');
+  7        when 'C' then dbms_output.put_line('Well done');
+  8        when 'D' then dbms_output.put_line('You passed');
+  9        when 'F' then dbms_output.put_line('Failed');
+ 10        else dbms_output.put_line('No such grade');
+ 11     END CASE;
+ 12  END;
+ 13  /
+Excellent
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Excellent
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     grade char(1) := '&grade';
+  3  BEGIN
+  4     CASE grade
+  5        when 'A' then dbms_output.put_line('Excellent');
+  6        when 'B' then dbms_output.put_line('Very good');
+  7        when 'C' then dbms_output.put_line('Well done');
+  8        when 'D' then dbms_output.put_line('You passed');
+  9        when 'F' then dbms_output.put_line('Failed');
+ 10        else dbms_output.put_line('No such grade');
+ 11     END CASE;
+ 12  END;
+ 13  /
+Enter value for grade: b
+old   2:    grade char(1) := '&grade';
+new   2:    grade char(1) := 'b';
+No such grade
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for grade: B
+old   2:    grade char(1) := '&grade';
+new   2:    grade char(1) := 'B';
+Very good
+
+PL/SQL procedure successfully completed.
+
+------PL/SQL FOR LOOPS------
+
+SQL> DECLARE
+  2     a number(2);
+  3  BEGIN
+  4     FOR a in 10 .. 20 LOOP
+  5         dbms_output.put_line('value of a: ' || a);
+  6    END LOOP;
+  7  END;
+  8  /
+value of a: 10
+value of a: 11
+value of a: 12
+value of a: 13
+value of a: 14
+value of a: 15
+value of a: 16
+value of a: 17
+value of a: 18
+value of a: 19
+value of a: 20
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     a number(2);
+  3  BEGIN
+  4     FOR a in 1 .. 5 LOOP
+  5         dbms_output.put_line('value of a: ' || a);
+  6    END LOOP;
+  7  END;
+  8  /
+value of a: 1
+value of a: 2
+value of a: 3
+value of a: 4
+value of a: 5
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     a number(2) ;
+  3  BEGIN
+  4     FOR a IN REVERSE 10 .. 20 LOOP
+  5        dbms_output.put_line('value of a: ' || a);
+  6     END LOOP;
+  7  END;
+  8  /
+value of a: 20
+value of a: 19
+value of a: 18
+value of a: 17
+value of a: 16
+value of a: 15
+value of a: 14
+value of a: 13
+value of a: 12
+value of a: 11
+value of a: 10
+
+PL/SQL procedure successfully completed.
+
+---------------PL/SQL WHILE LOOPS--------
+
+SQL> DECLARE
+  2     a number(2) := 10;
+  3  BEGIN
+  4     WHILE a < 20 LOOP
+  5        dbms_output.put_line('value of a: ' || a);
+  6        a := a + 1;
+  7     END LOOP;
+  8  END;
+  9  /
+value of a: 10
+value of a: 11
+value of a: 12
+value of a: 13
+value of a: 14
+value of a: 15
+value of a: 16
+value of a: 17
+value of a: 18
+value of a: 19
+
+PL/SQL procedure successfully completed.
+
+
+
+
+ASSIGNMENTS:
+
+1. DISPLAY YOUR NAME 5 TIMES USING FOR LOOP.
+2. WRITE A PL/SQL BLOCK OF CODE TO INVERT A NUMBER 12345 TO 54321.
+3. WRITE A PL/SQL CODE BLOCK TO CALCULATE THE AREA OF CIRCLE FOR A VALUE OF RADIUS VARYING FROM 3 TO 7. STORE THE RADIUS & THE CORRESPONDING VALUES 
+OF CALCULATED AREA IN AN EMPTY TABLE NAMED AREAS, CONSISTING OF TWO COLUMNS, RADIUS & AREA. 
+Hint: create a table Area(radius,area), insert values into Area table through PL/SQL blocks.
+4. CREATE A SIMPLE LOOP SUCH THAT A MESSAGE IS DISPLAYED WHEN A LOOP EXCEEDS A PARTICULAR VALUE(WHILE LOOP). 
+5. WRITE A PL/SQL BLOCK CODE THAT WILL ACCEPT AN ACCOUNT NUMBER FROM THE USER, CHECK IF THE USER'S BALANCE IS LESS THAN THE MINIMUM BALANCE, 
+ONLY THEN DEDUCT RS. 100/- FROM THE AVAILABLE BALANCE. THE PROCESS IS FIRED ON THE ACCOUNTS TABLE(Hint: create a table ACCOUNTS with necessary attributes,
+LIKE ACC NO,NAME,LAST DATE OF TRANSACTION,CREDIT,DEBIT,CURRENT BAL, ETC,.). 
+6. BANK DECLARES 8% INTEREST ON CAPITAL. SO, UPDATE ALL ACCOUNTS USING PL/SQL CODE BLOCK. 
+  

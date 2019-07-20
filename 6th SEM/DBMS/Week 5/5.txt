@@ -1,0 +1,160 @@
+
+SQL> DECLARE
+  2     name varchar2(20) := 'Ranajit Roy';
+  3  BEGIN
+  4     for i in 1..5 LOOP
+  5             dbms_output.put_line(name);
+  6     END LOOP;
+  7  END;
+  8  /
+
+PL/SQL procedure successfully completed.
+
+SQL> set serveroutput on;
+SQL> /
+Ranajit Roy
+Ranajit Roy
+Ranajit Roy
+Ranajit Roy
+Ranajit Roy
+
+PL/SQL procedure successfully completed.
+
+
+SQL> DECLARE
+  2     num integer := &num;
+  3     result integer := 0;
+  4  BEGIN
+  5     WHILE num!=0 LOOP
+  6             result := result*10 + MOD(num,10);
+  7             num := FLOOR(num/10);
+  8     END LOOP;
+  9     dbms_output.put_line(result);
+ 10  END;
+ 11  /
+Enter value for num: 12345
+old   2:        num integer := &num;
+new   2:        num integer := 12345;
+54321
+
+PL/SQL procedure successfully completed.
+
+
+
+SQL> create table area(radius integer, area number(5,4));
+
+Table created.
+
+SQL> DECLARE
+  2     pi constant number(5,2) := 3.14;
+  3     area number(5,2);
+  4  BEGIN
+  5     FOR radius in 3..7 LOOP
+  6             area := pi*radius*radius;
+  7             insert into area values(radius, area);
+  8     END LOOP;
+  9  END;
+ 10  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from area;
+
+    RADIUS       AREA
+---------- ----------
+         3      28.26
+         4      50.24
+         5       78.5
+         6     113.04
+         7     153.86
+
+SQL> DECLARE
+  2     inp integer := &inp;
+  3     a integer := 0;
+  4  BEGIN
+  5     WHILE a<=inp LOOP
+  6             dbms_output.put_line(a);
+  7             a := a+1;
+  8     END LOOP;
+  9     dbms_output.put_line('Value Exceeded!');
+ 10  END;
+ 11  /
+Enter value for inp: 4
+old   2:        inp integer := &inp;
+new   2:        inp integer := 4;
+0
+1
+2
+3
+4
+Value Exceeded!
+
+PL/SQL procedure successfully completed.
+
+
+SQL> select * from accounts;
+
+     ACCNO    CURRBAL
+---------- ----------
+         1       4900
+         2      19900
+         3      34900
+         4      49900
+         5      64900
+         6      79900
+
+6 rows selected.
+
+SQL> DECLARE
+  2     acid accounts.accno%type := &acid;
+  3     bal accounts.currbal%type;
+  4  BEGIN
+  5     SELECT currbal INTO bal FROM accounts WHERE accno=acid;
+  6     IF bal<=50000 THEN
+  7             UPDATE accounts SET currbal = currbal-100 WHERE accno=acid;
+  8             dbms_output.put_line('Balance updated!');
+  9     ELSE
+ 10             dbms_output.put_line('Balance above min balance.');
+ 11     END IF;
+ 12  END;
+ 13  /
+Enter value for acid: 4
+old   2:        acid accounts.accno%type := &acid;
+new   2:        acid accounts.accno%type := 4;
+Balance updated!
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from accounts;
+
+     ACCNO    CURRBAL
+---------- ----------
+         1       4900
+         2      19900
+         3      34900
+         4      49800
+         5      64900
+         6      79900
+
+6 rows selected.
+
+SQL> DECLARE
+  2  BEGIN
+  3     UPDATE accounts SET currbal=currbal*1.08;
+  4  END;
+  5  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from accounts;
+
+     ACCNO    CURRBAL
+---------- ----------
+         1       5292
+         2      21492
+         3      37692
+         4      53784
+         5      70092
+         6      86292
+
+6 rows selected.

@@ -1,0 +1,34 @@
+FUNCTIONS:
+
+1.Write a PL/SQL block to find the second highest salary from the customer table.
+
+PL/SQL Transactions:(commit, savepoint, rollback)
+
+2. Write a PL/SQL block of code that first withdraws an amount of Rs. 1000. Then deposits
+an amount of Rs. 1,40,000. Update the current balance. Then check to see that the current 
+balance of ALL the accounts in the bank does not exceed Rs. 2,00,000. If the balance exceeds,
+then undo the deposit just made.(Hint: create EMP_MSTR table before writing this block) 
+
+IMPLICIT CURSOR:
+
+3. The bank manager has decided to transfer employees accross branches. Write a PL/SQL block 
+to accept an employee number and the branch number followed by updating the branch number of that
+employee to which he belongs appropriately. Display an appropriate message using SQL%FOUND based on
+the existence of the record in the EMP_MSTR table. Otherwise, display message using SQL%NOTFOUND based on the 
+non-existence of the record.  
+
+4. The bank manager of Kolkata branch decides to activate all those accounts, which were previously 
+marked as inactive for performing no transactions in last 365 days. Write a PL/SQL block to update the status 
+of accounts. Display an appropriate message based on the number of rows affected by the update fired.
+(use SQL%ROWCOUNT) 
+
+EXPLICIT CURSOR:
+
+5.The bank manager has decided to mark all those accounts as inactive(I) on which there are no transactions
+performed in last 365 days. Whenever any such update takes place, a record for the same is maintained in the 
+INACTV table comprising of the account number, the opening date and the type of account.
+Write a PL/SQL block to do the same.
+Hint: create the table INACTV first.
+
+6. Write a PL/SQL block of code that will display the customer name, the fixed deposit number and the fixed 
+deposit amount of the first 5 customers holding the highest amount in fixed deposits.   

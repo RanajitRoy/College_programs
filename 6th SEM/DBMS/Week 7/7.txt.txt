@@ -1,0 +1,86 @@
+
+SQL> CREATE OR REPLACE TRIGGER permit
+  2  BEFORE INSERT OR UPDATE OR DELETE on emp_copy
+  3  FOR EACH ROW
+  4  BEGIN
+  5     IF to_number(to_char(sysdate,'HH24'))>=16 THEN
+  6             raise_application_error(-20000,'No permission after 16:00!');
+  7     END IF;
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> delete from emp_copy where empno in (2,3);
+delete from emp_copy where empno in (2,3)
+            *
+ERROR at line 1:
+ORA-20000: No permission after 16:00!
+ORA-06512: at "SCOTT.PERMIT", line 3
+ORA-04088: error during execution of trigger 'SCOTT.PERMIT'
+
+
+
+
+
+
+
+
+SQL> CREATE OR REPLACE TRIGGER del_deny
+  2  BEFORE DELETE ON rana_emp
+  3  FOR EACH ROW
+  4  BEGIN
+  5     raise_application_error(-20001, 'Deletion not allowed!');
+  6  END;
+  7  /
+
+Trigger created.
+
+SQL> delete from rana_emp;
+delete from rana_emp
+            *
+ERROR at line 1:
+ORA-20001: Deletion not allowed!
+ORA-06512: at "HR.DEL_DENY", line 2
+ORA-04088: error during execution of trigger 'HR.DEL_DENY'
+
+
+
+
+
+
+
+
+
+SQL> create table empr(id number primary key, name varchar2(15));
+
+Table created.
+
+SQL> CREATE SEQUENCE empr_seq;
+
+Sequence created.
+
+SQL> CREATE OR REPLACE TRIGGER empr_pk
+  2  BEFORE INSERT ON empr
+  3  FOR EACH ROW
+  4  BEGIN
+  5     select empr_seq.nextval into :new.id from dual;
+  6  END;
+  7  /
+
+Trigger created.
+
+SQL> insert into empr(name) values('&name');
+Enter value for name: Ranajit
+old   1: insert into empr(name) values('&name')
+new   1: insert into empr(name) values('Ranajit')
+
+1 row created.
+
+SQL> select * from empr;
+
+        ID NAME
+---------- ---------------
+         1 Ranajit
+
+SQL>

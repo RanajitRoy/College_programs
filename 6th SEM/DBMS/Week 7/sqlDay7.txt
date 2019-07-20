@@ -1,0 +1,417 @@
+
+---ROWID-------------
+select rowid,id from customers;
+
+---ROWNUM------------
+
+SQL> select rownum,id,name from customers
+  2  where rownum<4;
+
+    ROWNUM         ID NAME
+---------- ---------- --------------------
+         1          1 Ramesh
+         2          2 Chetan
+         3          3 Kapil
+
+
+----------SEQUENCES-----------
+
+SQL> CREATE SEQUENCE ndr1234
+  2    MINVALUE 0
+  3    START WITH 0
+  4    INCREMENT BY 1
+  5    CACHE 20;
+
+Sequence created.
+
+SQL> create table stu1(id number, name varchar2(20));
+
+Table created.
+
+SQL> INSERT INTO stu1
+  2  (id, name)
+  3  VALUES
+  4  (ndr1234.NEXTVAL, 'Nilanjana');
+
+1 row created.
+
+SQL> /
+
+1 row created.
+
+SQL> /
+
+1 row created.
+
+SQL> select * from stu1;
+
+        ID NAME
+---------- --------------------
+         1 Nilanjana
+         2 Nilanjana
+         3 Nilanjana
+
+
+-------------------TRIGGERS--------------
+
+syntax:
+
+CREATE [OR REPLACE ] TRIGGER trigger_name 
+{BEFORE | AFTER | INSTEAD OF } 
+{INSERT [OR] | UPDATE [OR] | DELETE} 
+[OF col_name] 
+ON table_name 
+[REFERENCING OLD AS o NEW AS n] 
+[FOR EACH ROW] 
+WHEN (condition)  
+DECLARE
+   Declaration-statements
+BEGIN 
+   Executable-statements
+EXCEPTION
+   Exception-handling-statements
+END;
+
+----------This example demonstrates use of trigger to allow checking
+BEFORE INSERT or UPDATE on each row------------------
+(Minimum salary checking trigger)
+ 
+SQL> create table emp_trig(ename varchar2(20), sal number);
+
+Table created.
+
+SQL> create or replace trigger min_sal_chk
+  2  before insert or update on emp_trig
+  3  for each row
+  4  when(new.sal<500)
+  5  begin
+  6  raise_application_error(-20000,'sal must be above 500');
+  7  end;
+  8  /
+
+Trigger created.
+
+SQL> insert into emp_trig values('ab',300);
+insert into emp_trig values('ab',300)
+            *
+ERROR at line 1:
+ORA-20000: sal must be above 500
+ORA-06512: at "SCOTT.MIN_SAL_CHK", line 2
+ORA-04088: error during execution of trigger 'SCOTT.MIN_SAL_CHK'
+
+
+SQL> insert into emp_trig values('ab',600);
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+----------This example demonstrates use of trigger to keep
+information of deleted records------------------
+
+SQL> create table emp_bkup(ename varchar2(20), sal number, deletedt date);
+
+Table created.
+
+SQL> create or replace trigger bkup_rec
+  2  after delete on emp_trig
+  3  for each row
+  4  begin
+  5  insert into emp_bkup values(:old.ename,:old.sal,sysdate);
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> select * from emp_trig;
+
+ENAME                       SAL
+-------------------- ----------
+ab                          600
+
+SQL> select * from emp_bkup;
+
+no rows selected
+
+SQL> insert into emp_trig values('cd',1000);
+
+1 row created.
+
+SQL> insert into emp_trig values('ef',2000);
+
+1 row created.
+
+SQL> insert into emp_trig values('gh',5000);
+
+1 row created.
+
+SQL> select * from emp_trig;
+
+ENAME                       SAL
+-------------------- ----------
+ab                          600
+cd                         1000
+ef                         2000
+gh                         5000
+
+SQL> delete from emp_trig where
+  2  sal<2000;
+
+2 rows deleted.
+
+SQL> select * from emp_bkup;
+
+ENAME                       SAL DELETEDT
+-------------------- ---------- ---------
+ab                          600 15-APR-16
+cd                         1000 15-APR-16
+
+
+
+The following program creates a row level trigger for the customers table that would fire for
+ INSERT or UPDATE or DELETE operations performed on the CUSTOMERS table. 
+This trigger will display the salary difference between the old values and new values:
+
+
+SQL> CREATE OR REPLACE TRIGGER display_salary_changes
+  2  BEFORE DELETE OR INSERT OR UPDATE ON customers
+  3  FOR EACH ROW
+  4  WHEN (NEW.ID > 0)
+  5  DECLARE
+  6     sal_diff number;
+  7  BEGIN
+  8     sal_diff := :NEW.salary  - :OLD.salary;
+  9     dbms_output.put_line('Old salary: ' || :OLD.salary);
+ 10     dbms_output.put_line('New salary: ' || :NEW.salary);
+ 11     dbms_output.put_line('Salary difference: ' || sal_diff);
+ 12  END;
+ 13  /
+
+Trigger created.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                   500
+         2 Chetan                       20 Delhi                      1500
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2250
+
+7 rows selected.
+
+SQL> set serveroutput on;
+SQL> UPDATE customers
+  2  SET salary = salary + 500
+  3  WHERE id = 1;
+Old salary: 500
+New salary: 1000
+Salary difference: 500
+
+1 row updated.
+
+----This trigger will display the salary difference between the old values
+ and new values, but only for certain rows-------:
+
+
+SQL> CREATE OR REPLACE TRIGGER display_salary_changes
+  2     BEFORE DELETE OR INSERT OR UPDATE ON customers
+  3     FOR EACH ROW
+  4      WHEN (NEW.ID BETWEEN 1 and 3)
+  5      DECLARE
+  6        sal_diff number;
+  7      BEGIN
+  8         sal_diff := :NEW.salary  - :OLD.salary;
+  9        dbms_output.put_line('Old salary: ' || :OLD.salary);
+ 10       dbms_output.put_line('New salary: ' || :NEW.salary);
+ 11        dbms_output.put_line('Salary difference: ' || sal_diff);
+ 12    END;
+ 13    /
+
+Trigger created.
+
+SQL> update customers set salary=salary+100
+  2  where id=&id;
+Enter value for id: 1
+old   2: where id=&id
+new   2: where id=1
+Old salary: 1000
+New salary: 1100
+Salary difference: 100
+
+1 row updated.
+
+SQL> /
+Enter value for id: 7
+old   2: where id=&id
+new   2: where id=7
+
+1 row updated.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2350
+
+7 rows selected.
+
+-----TRIGGER BEFORE INSERTION----
+
+SQL> CREATE OR REPLACE TRIGGER display_salary_changes
+  2     BEFORE DELETE OR INSERT OR UPDATE ON customers
+  3     FOR EACH ROW
+  4      WHEN (NEW.ID >0)
+  5      DECLARE
+  6        sal_diff number;
+  7      BEGIN
+  8         sal_diff := :NEW.salary  - :OLD.salary;
+  9        dbms_output.put_line('Old salary: ' || :OLD.salary);
+ 10       dbms_output.put_line('New salary: ' || :NEW.salary);
+ 11        dbms_output.put_line('Salary difference: ' || sal_diff);
+ 12    END;
+ 13    /
+
+Trigger created.
+
+SQL> insert into customers values(8,'smith',50,'kol',1000);
+Old salary:
+New salary: 1000
+Salary difference:
+
+1 row created.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         8 smith                        50 kol                        1000
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2350
+
+8 rows selected.
+
+
+---------VIEW-----------------
+
+SQL> conn
+Enter user-name: system
+Enter password:
+Connected.
+SQL> GRANT CREATE VIEW TO scott;
+
+Grant succeeded.
+
+SQL> create view v_cus as select * from customers;
+
+View created.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2350
+
+7 rows selected.
+SQL> select * from v_cus;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2350
+
+7 rows selected.
+
+SQL> update v_cus set salary=salary-100
+  2  where id=7;
+
+1 row updated.
+
+SQL> select * from v_cus;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2250
+
+7 rows selected.
+
+SQL> select * from customers;
+
+        ID NAME                        AGE ADDRESS                  SALARY
+---------- -------------------- ---------- -------------------- ----------
+         1 Ramesh                       35 Ahmedabad                  1100
+         2 Chetan                       20 Delhi                      2000
+         3 Kapil                        28 Delhi                       875
+         4 Bikash                       25 Kolkata                    4500
+         5 Chaitali                     28 Kolkata                    1250
+         6 Sadhana                      30 Pune                       2500
+         7 Keshav                       39 Mumbai                     2250
+
+7 rows selected.
+
+
+
+-----------ASSIGNMENTS----------
+
+1. Design a security level trigger which disallows any DML to be performed after 1600 hrs of a day. 
+Hint:
+SQL> select to_char(sysdate,'HH:MM:SS') from dual;
+
+TO_CHAR(
+--------
+02:04:43
+
+SQL> select to_char(sysdate,'HH') from dual;
+
+TO
+--
+02
+
+SQL> select to_char(sysdate,'HH24') from dual;
+
+TO
+--
+14
+
+2. Write a trigger which will not allow to delete records from emp_bkup.
+(Hint: use if inserting/updating/deleting then......) 
+
+3. Write a trigger which will create a primary key automatically into a table.  
+
+
+
+
+ 

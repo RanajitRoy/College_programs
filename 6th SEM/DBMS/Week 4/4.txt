@@ -101,3 +101,53 @@ SQL> select sum(count(*)) from sailors
 SUM(COUNT(*))
 -------------
             7
+
+SQL> select sid from sailors
+   2 where age>20 and sid not in 
+   3 (select distinct sid from reserves where bid in
+   4 (select bid from boats where color='red'));
+
+       SID
+----------
+        29
+        32
+        58
+        74
+        85
+        95
+
+6 rows selected.
+
+SQL> select distinct months_between
+   2 ((select day from reserves where bid in
+   3 (select bid from boats where bname='Marine') and day not in
+   4 (select min(day) from reserves group by bid having bid in
+   5 (select bid from boats where bname='Marine'))),
+   6 (select min(day) from reserves group by bid having bid in
+   7 (select bid from boats where bname='Marine'))) as mon_gap     
+   8 from reserves;
+
+MON_GAP
+----------
+5.03225806
+
+SQL> select sname from sailors where sid in 
+   2 (select sid from reserves group by sid 
+   3 having count(distinct bid)=(select count(*) from boats));
+
+SNAME
+----------
+Dustin
+
+SQL> select sname from sailors where sid in 
+   2 (select sid from reserves where bid in 
+   3 (select bid from boats where bname='Interlake') 
+   4 group by sid having count(distinct bid)=(select count(*) 
+   5 from boats where bname='Interlake'));
+
+SNAME
+----------
+Dustin
+Horatio
+
+
